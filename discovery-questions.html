@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discovery Questions — B2B Acquisition</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --border: #e2e6ed;
+      --text: #1a1d23;
+      --text-secondary: #5f6876;
+      --accent: #008060;
+      --accent-light: #e6f5f0;
+      --accent-dark: #004c3f;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,.08);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: var(--accent); }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 0 2rem;
+    }
+    nav .inner { max-width: 960px; margin: auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    nav .logo { font-weight: 700; font-size: 1.1rem; color: var(--accent); }
+    nav a.back { text-decoration: none; color: var(--text-secondary); font-size: .9rem; font-weight: 500; }
+    nav a.back:hover { color: var(--accent); }
+
+    .container { max-width: 960px; margin: auto; padding: 2.5rem 2rem 4rem; }
+
+    h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: .5rem; }
+    .subtitle { color: var(--text-secondary); font-size: 1rem; margin-bottom: 2rem; }
+
+    .toc {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.25rem 1.5rem; margin-bottom: 2rem; box-shadow: var(--shadow);
+    }
+    .toc h3 { font-size: .9rem; font-weight: 700; margin-bottom: .5rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .05em; }
+    .toc ul { list-style: none; display: flex; flex-wrap: wrap; gap: .5rem; }
+    .toc a {
+      display: inline-block; padding: .35rem .75rem; border-radius: 6px;
+      background: var(--bg); border: 1px solid var(--border); text-decoration: none;
+      font-size: .85rem; font-weight: 500; color: var(--text); transition: all .15s;
+    }
+    .toc a:hover { border-color: var(--accent); color: var(--accent); }
+
+    h2 {
+      font-size: 1.5rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem;
+      padding-bottom: .5rem; border-bottom: 2px solid var(--accent);
+    }
+
+    .section-block {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: var(--shadow);
+    }
+    .section-block h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .75rem; color: var(--accent-dark); }
+    .section-block h4 { font-size: .9rem; font-weight: 700; margin-top: 1.1rem; margin-bottom: .4rem; color: var(--text); }
+    .section-block p { font-size: .9rem; color: var(--text-secondary); margin-bottom: .5rem; }
+
+    .q-list { list-style: none; padding: 0; margin: 0; }
+    .q-list li {
+      font-size: .9rem; color: var(--text); padding: .55rem 0;
+      border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: .6rem;
+    }
+    .q-list li:last-child { border-bottom: none; }
+    .q-list li::before {
+      content: '?'; flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+      background: var(--accent-light); color: var(--accent-dark); font-weight: 700;
+      font-size: .7rem; display: flex; align-items: center; justify-content: center; margin-top: 2px;
+    }
+
+    .note {
+      background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px;
+      padding: .75rem 1rem; margin: .75rem 0; font-size: .85rem; color: #92400e;
+    }
+    .note strong { color: #b45309; }
+
+    .label {
+      display: inline-block; padding: .15rem .5rem; border-radius: 4px;
+      font-size: .75rem; font-weight: 600; margin-bottom: .5rem;
+    }
+    .label-commercial { background: #dbeafe; color: #1d4ed8; }
+    .label-functional { background: #fef3c7; color: #92400e; }
+    .label-framework { background: var(--accent-light); color: var(--accent-dark); }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 1.6rem; }
+      .container { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo">Discovery Questions</div>
+    <a href="index.html" class="back">&larr; Back to Get Set Up</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Shopify B2B Discovery Questions</h1>
+  <p class="subtitle">Comprehensive question bank for qualifying and scoping B2B opportunities.</p>
+
+  <div class="toc">
+    <h3>Jump to</h3>
+    <ul>
+      <li><a href="#general">General</a></li>
+      <li><a href="#revenue">Revenue</a></li>
+      <li><a href="#payments">Payments</a></li>
+      <li><a href="#budget">Budget</a></li>
+      <li><a href="#ecosystem">Ecosystem</a></li>
+      <li><a href="#timeline">Timeline</a></li>
+      <li><a href="#team">Merchant Team</a></li>
+      <li><a href="#authority">Authority</a></li>
+      <li><a href="#tech-stack">Tech Stack</a></li>
+      <li><a href="#contract">Contract Info</a></li>
+      <li><a href="#buying-process">B2B Buying Process</a></li>
+      <li><a href="#pricing">Pricing & Catalogs</a></li>
+      <li><a href="#sales-reps">Sales Reps</a></li>
+      <li><a href="#shipping">Shipping & Delivery</a></li>
+      <li><a href="#mvd">Minimum Viable Discovery</a></li>
+      <li><a href="#primitives">B2B Primitives</a></li>
+      <li><a href="#product-mgmt">Product Management</a></li>
+      <li><a href="#day-to-day">Day-to-Day Operations</a></li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <h2 id="commercial">Commercial Questions</h2>
+  <!-- ══════════════════════════════════════ -->
+
+  <div class="section-block" id="general">
+    <span class="label label-commercial">Commercial</span>
+    <h3>General</h3>
+    <ul class="q-list">
+      <li>Company overview: Industry? Products? Customers? Brand?</li>
+      <li>How much do you know about Shopify?</li>
+      <li>What is your compelling event to act?</li>
+      <li>Why Shopify B2B?</li>
+      <li>What is your current set up for B2B?</li>
+      <li>How are B2B orders originating today?</li>
+      <li>What are the main business challenges?</li>
+      <li>What are the main functional/technical challenges?</li>
+      <li>What is your desired set up for B2B?</li>
+      <li>Please detail all the B2B requirements.</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="revenue">
+    <span class="label label-commercial">Commercial</span>
+    <h3>Revenue</h3>
+    <ul class="q-list">
+      <li>What is the global revenue of the company?</li>
+      <li>What is your total B2C revenue (online and offline)?</li>
+      <li>Online B2C revenue?</li>
+      <li>What is your total B2B revenue (online and offline)?</li>
+      <li>B2B Revenue split between B2B portal, Inbound and manual sales, EDI, Punchout, marketplaces (other streams)?</li>
+      <li>Of that revenue, how much will originate online and go through Shopify? (B2B revenue online + projected B2B revenue online)</li>
+      <li>How many B2B orders annually?</li>
+      <li>B2B AOV?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="payments">
+    <span class="label label-commercial">Commercial</span>
+    <h3>Payments</h3>
+    <ul class="q-list">
+      <li>How will your B2B customers pay for their orders?</li>
+      <li>Will you allow your B2B customers to pay via credit/debit card if they wish?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="budget">
+    <span class="label label-commercial">Commercial</span>
+    <h3>Budget</h3>
+    <ul class="q-list">
+      <li>Shopify Plus starts at $2,500/month (or $2,300 for 3 years). Does this meet your expectations?</li>
+      <li>Shopify Plus starts at €2,220/month (or €2,045 for 3 years). Does this meet your expectations?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="ecosystem">
+    <span class="label label-commercial">Commercial</span>
+    <h3>Ecosystem</h3>
+    <ul class="q-list">
+      <li>Do you have any connections with Shopify agency partners?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="timeline">
+    <span class="label label-commercial">Commercial</span>
+    <h3>Timeline</h3>
+    <ul class="q-list">
+      <li>When do you want to make a decision on your new commerce vendors?</li>
+      <li>Do you have a timeline for when you want to go live? Why?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="team">
+    <span class="label label-commercial">Commercial</span>
+    <h3>Merchant Team</h3>
+    <ul class="q-list">
+      <li>How will you manage your future online business?</li>
+      <li>Team structure?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="authority">
+    <span class="label label-commercial">Commercial</span>
+    <h3>Authority</h3>
+    <ul class="q-list">
+      <li>Who is the main contact for the project implementation?</li>
+      <li>Who is the decision maker?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="tech-stack">
+    <span class="label label-commercial">Commercial</span>
+    <h3>Current Tech Stack</h3>
+    <ul class="q-list">
+      <li>Ecommerce Platform(s)?</li>
+      <li>Payment Gateway?</li>
+      <li>ERP?</li>
+      <li>CRM?</li>
+      <li>OMS?</li>
+      <li>WMS?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="contract">
+    <span class="label label-commercial">Commercial</span>
+    <h3>Contract Info</h3>
+    <h4>English</h4>
+    <ul class="q-list">
+      <li>Full legal business name of the Merchant's company</li>
+      <li>Name of the selected brand or brands?</li>
+      <li>Name of your company's launch (ecommerce project manager) contact</li>
+      <li>Email of your company's launch (ecommerce project manager) contact</li>
+      <li>Name for the person who will validate the data (business performances) on behalf of the Merchant</li>
+      <li>Email address for the person who will validate the data on behalf of the Merchant</li>
+      <li>Name of your company's signatory</li>
+      <li>Email address of your company's signatory</li>
+      <li>Title of your company's signatory</li>
+      <li>Phone number of your company's signatory</li>
+    </ul>
+    <h4>Français</h4>
+    <ul class="q-list">
+      <li>Nom légal complet de la société du commerçant</li>
+      <li>Nom de la ou des marques sélectionnées ?</li>
+      <li>Nom du responsable de projet de votre société (chef de projet e-commerce)</li>
+      <li>Adresse e-mail du responsable de projet de votre société (chef de projet e-commerce)</li>
+      <li>Nom du signataire de votre entreprise</li>
+      <li>Adresse e-mail du signataire de votre entreprise</li>
+      <li>Titre du signataire de votre entreprise</li>
+      <li>Numéro de téléphone du signataire de votre entreprise</li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <h2 id="functional">Functional & Business Questions</h2>
+  <!-- ══════════════════════════════════════ -->
+
+  <div class="section-block" id="buying-process">
+    <span class="label label-functional">Functional</span>
+    <h3>B2B Buying Process</h3>
+    <ul class="q-list">
+      <li>Walk me through how a current B2B customer places an online order with you?</li>
+      <li>Why are you looking to replace this process?</li>
+      <li>Do you sell both D2C and B2B from the same storefront? Or do you have a completely separate B2B online store?</li>
+      <li>Are B2B buyers required to login to a B2B portal to place an order?</li>
+      <li>If yes, when they login do they see products and prices specific to their company profile? Or do all wholesale customers see the same prices and products?</li>
+      <li>How do new B2B customers request access or request to become a B2B buyer with you now? What does that process look like?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="pricing">
+    <span class="label label-functional">Functional</span>
+    <h3>Structure of Price Lists, B2B Catalogs & Pricing Assignment</h3>
+    <ul class="q-list">
+      <li>Tell me about your B2B pricing structure.</li>
+      <li>If more than one pricing tier or fixed price, how do you determine the pricing tiers or fixed prices a given customer receives?</li>
+      <li>Do you have different price tiers for different segments of customers?</li>
+      <li>If yes, can you elaborate on these audiences and how they are assigned?</li>
+      <li>How many price tiers do you have and how are they managed?</li>
+      <li>What types of products do you sell? Are they customizable/personalized/digital/perishable, etc.?</li>
+      <li>If yes, how is this currently accomplished/managed?</li>
+      <li>Do you sell products in minimums, multiples?</li>
+      <li>Are your minimums and multiples at the variant or product level?</li>
+      <li>How often do your prices change?</li>
+      <li>Do you offer any additional discounts on top of your wholesale prices based on the amount of product a customer orders or current promotions you're running?</li>
+      <li>If yes, please describe the type of promotions you run (volume pricing, promotional discounts, e.g. 5% orders over $2,000)?</li>
+      <li>Who are your customers? Where are they located?</li>
+      <li>What terminology do you use when referring to your customers? (e.g. Partners, Dealers, Vendors, etc.) If multiple terms, explain the differences.</li>
+      <li>Are there any other unique customer attributes we should be aware of?</li>
+      <li>What would you like a customer to be able to do or change on their own in terms of self-serving their own orders and accounts?</li>
+      <li>Is it ever the case that a buyer's manager or a senior team member needs to approve an order after it's placed by the buyer?</li>
+      <li>How do your buyers search/add products to an order? (re-order, order from a list, import a CSV, search for SKU/part numbers?)</li>
+      <li>Do you have any minimum or maximum order restrictions?</li>
+      <li>How many line items are on an average order?</li>
+      <li>Do your customers often create recurring purchases or quick re-orders?</li>
+      <li>Do you offer pre-orders or seasonal selling?</li>
+      <li>Do you need to capture Purchase Order numbers or other information at time of checkout?</li>
+      <li>Do you accept quotes before orders?</li>
+      <li>If yes, please describe how this process works.</li>
+      <li>Do you need to manually approve orders?</li>
+      <li>Do any of your orders come through EDI?</li>
+      <li>If yes, what percentage and how is this currently managed (system integrations, etc.)?</li>
+      <li>Are you looking for Shopify to manage any part of this process?</li>
+      <li>If a B2B customer doesn't order with you online, how will they order with you?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="sales-reps">
+    <span class="label label-functional">Functional</span>
+    <h3>Sales Reps / Customer Service Reps Placing Orders on Behalf of Customers</h3>
+    <ul class="q-list">
+      <li>Are your sales reps solely employed by your company (staff reps) or are they independent?</li>
+      <li>What information should your sales reps have access to? Should they be able to see all customers, orders, and price lists?</li>
+      <li>Can sales reps modify pricing or add promotions ad-hoc?</li>
+      <li>Will sales reps have access to wifi when meeting with customers?</li>
+      <li>Aside from order-taking, what responsibilities does your sales rep have when meeting with customers (e.g. troubleshooting, new customer training)?</li>
+      <li>How do you process payments for B2B orders? Would your customers be paying for/processing orders in Shopify or is this done externally?</li>
+      <li>Do you offer payment terms?</li>
+      <li>If yes, what percentage of B2B buyers are on terms?</li>
+      <li>What are all the forms of payments you are looking to accept? (CC, ACH, check, etc.)</li>
+      <li>Do you offer customers store credit?</li>
+      <li>Are there spending limits for your customers per day/month/etc.?</li>
+      <li>If yes, what are the limits and how are they managing this with their current customers?</li>
+      <li>Do you have any use cases where customers are charged tax?</li>
+      <li>Are there any other complex tax requirements that need to be taken into consideration?</li>
+      <li>Do you include shipping at checkout for B2B orders?</li>
+      <li>If not, when are shipping charges applied and how are they calculated?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="shipping">
+    <span class="label label-functional">Functional</span>
+    <h3>Shipping & Delivery</h3>
+    <div class="note"><strong>Note:</strong> It's common for B2B orders not to include a specific shipping cost at checkout. In this case, an admin would add shipping to the order once confirmed.</div>
+    <ul class="q-list">
+      <li>Do you have any custom shipping types or requirements?</li>
+      <li>If yes, how is this currently managed?</li>
+      <li>Do you provide pickup options for customers?</li>
+      <li>Are there special/custom pickup instructions customers need to be aware of?</li>
+      <li>Do you have any partial / delayed shipment scenarios?</li>
+      <li>When orders are placed, will they originate in an ERP and feed into Shopify? Will they originate in Shopify and need to feed into other systems (like an ERP)?</li>
+      <li>Please elaborate on the rest of your current tech stack.</li>
+      <li>Are there any other unique workflows related to discounts, pricing, shipping, customers, orders, etc. that are important to your current workflow?</li>
+      <li>Any additional unique personnel or logistical considerations that need to be accounted for?</li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <h2 id="framework">B2B Discovery Framework</h2>
+  <!-- ══════════════════════════════════════ -->
+
+  <div class="section-block" id="mvd">
+    <span class="label label-framework">Framework</span>
+    <h3>Minimum Viable Discovery — Order Origination Channels</h3>
+    <p>For each channel, determine: <strong>Does the merchant use it?</strong> and <strong>What is the estimated revenue ($)?</strong></p>
+    <ul class="q-list">
+      <li>Does this merchant have an existing self-serve B2B buying experience?</li>
+      <li>Does this merchant have sales representatives or manually input orders?</li>
+      <li>Does the merchant have any portion of their business selling to big box stores (Walmart, Nordstrom, CVS, etc.)? Alternatively, if tech savvy — do they have any part of their business using EDI?</li>
+      <li>Do the merchant's buyers use any e-procurement software, or punchout to place orders? (Punchout = connecting to the merchant's online store and placing orders directly from the buyer's e-procurement software)</li>
+      <li>Does the merchant have a retail location where buyers can place an order and pay via POS?</li>
+      <li>Does the merchant sell via a marketplace (e.g. Faire)?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="primitives">
+    <span class="label label-framework">Framework</span>
+    <h3>Will Shopify Be Source of Truth? — B2B Primitives</h3>
+
+    <h4>Company, Location & Customer Management</h4>
+    <ul class="q-list">
+      <li>Is the prospect currently using a CRM or ERP to manage companies, locations or customers?</li>
+      <li>Map the merchant's company, locations and customers hierarchy.</li>
+      <li>Does the prospect offer payment terms to their companies?</li>
+      <li>How and when will new customers, locations and companies be created?</li>
+      <li>Do the prospect's buyers have credit limits or buying limits? Describe how these limits work.</li>
+      <li>Does the prospect have any use cases where customers are charged sales tax? Describe the scenario.</li>
+    </ul>
+
+    <h4>B2B Buyer Pricing</h4>
+    <ul class="q-list">
+      <li>Does the prospect currently use an ERP or PIM to manage buyer pricing?</li>
+      <li>How often are prices refreshed? (At time of checkout, once per minute, daily, never?)</li>
+      <li>Describe how the merchant offers volume-based discounted pricing to their B2B customers.</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="product-mgmt">
+    <span class="label label-framework">Framework</span>
+    <h3>B2B Product Management</h3>
+    <ul class="q-list">
+      <li>Does the prospect currently use an ERP or PIM to manage their products and which products are available to each B2B buyer?</li>
+      <li>What kind of products is the prospect selling? Physical? Digital? Subscriptions? Sold by unit? Or weight and dimension?</li>
+      <li>Do you sell products in minimums, multiples?</li>
+      <li>Does the prospect sell products that require custom configuring, pricing and quoting (CPQ)?</li>
+    </ul>
+  </div>
+
+  <div class="section-block" id="day-to-day">
+    <span class="label label-framework">Framework</span>
+    <h3>Day-to-Day Operations on Shopify</h3>
+    <p>These questions guide how we position Shopify to solve their day-to-day management of the business.</p>
+    <ul class="q-list">
+      <li>What kind of payments are accepted by the prospect? Roughly what percentage of orders fall in each payment type? (Credit card, bank payment, cheque/cash, wire transfer)</li>
+      <li>What's your highest number of line items on an order?</li>
+      <li>Do you offer pre-orders, seasonal selling or subscriptions?</li>
+      <li>Are you selling both B2B and DTC? Blended vs dedicated?</li>
+      <li>Do the prospect's employees or sales reps require special permissions? Are they assigned to specific accounts? Or is their commission based on individual orders?</li>
+      <li>Do the prospect's employees or sales reps place orders on behalf of customers via the online store (i.e. impersonate them)?</li>
+      <li>What functionality are they looking for in their customer accounts?</li>
+      <li>Does the merchant want buyers to be able to manage their own locations and buyer profiles & permissions?</li>
+      <li>Do the merchant's buyers require approval workflows (e.g. buyer one creates the cart, buyer two approves and places the order), or do multiple buyers collaborate on the same order?</li>
+      <li>Does the prospect's customer leverage an existing account setup to check balances and pay open invoices?</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer style="max-width:960px; margin:auto; padding:2rem; text-align:center; color:#5f6876; font-size:.85rem; border-top:1px solid #e2e6ed;">
+  <p>Last updated <span id="last-updated"></span> · Maintained by the B2B Sales Team</p>
+</footer>
+
+<script>document.getElementById('last-updated').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });</script>
+
+</body>
+</html>
