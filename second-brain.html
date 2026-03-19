@@ -125,7 +125,10 @@
       <li><a href="#tools">Tools & Systems</a></li>
       <li><a href="#processes">Processes & Rituals</a></li>
       <li><a href="#technical">Technical Concepts</a></li>
-      <li><a href="#business">Business & Product Context</a></li>
+      <li><a href="#business">Business & Product</a></li>
+      <li><a href="#discovery">Discovery Questions</a></li>
+      <li><a href="#metrics">Key Metrics</a></li>
+      <li><a href="#flags">Red Flags Cheat Sheet</a></li>
     </ul>
   </div>
 
@@ -395,19 +398,170 @@
     <div class="role">Core billing mechanic for Shopify B2B</div>
     <h4>Rates</h4>
     <ul>
-      <li><strong>B2B VPF: 0.18%</strong> — applied when orders are tied to a Company</li>
-      <li><strong>DTC VPF: 0.40%</strong> — applied when orders are NOT tied to a Company</li>
+      <li><strong>B2B:</strong> 0.18% (18 basis points)</li>
+      <li><strong>DTC:</strong> 0.40% (40 basis points)</li>
     </ul>
-    <h4>Formula</h4>
+    <h4>Impact Example</h4>
+    <p>Merchant processes $10M in B2B GMV:</p>
     <p style="font-family: 'SF Mono', 'Fira Code', monospace; background: var(--bg); padding: .75rem 1rem; border-radius: 8px; border: 1px solid var(--border); font-size: .85rem;">
-      VPF = GMV × VPF Rate<br>
-      B2B Example: $5M GMV × 0.18% = $9,000<br>
-      DTC Example: $5M GMV × 0.40% = $20,000
+      ✅ Properly tagged to Companies: $10M × 0.18% = <strong>$18,000</strong> VPF<br>
+      ❌ Incorrectly tagged (DTC):&nbsp;&nbsp;&nbsp; $10M × 0.40% = <strong>$40,000</strong> VPF<br>
+      💸 Cost of error: <strong>$22,000 overpayment</strong>
     </p>
-    <p>Proper Companies implementation directly impacts merchant billing accuracy and Shopify's revenue classification. Getting this wrong means merchants overpay by more than 2×.</p>
     <span class="tag tag-product">#billing</span>
     <span class="tag tag-product">#pricing</span>
     <span class="tag tag-product">#b2b-primitive</span>
+  </div>
+
+  <div class="entry">
+    <h3>Billable Orders</h3>
+    <div class="role">When does Shopify bill VPF on an order?</div>
+    <h4>Two Key Questions</h4>
+    <ol>
+      <li>Was the order <strong>brokered by Shopify</strong>?</li>
+      <li>Was the <strong>transaction (payment) brokered by Shopify</strong>?</li>
+    </ol>
+    <p><strong>If EITHER = YES → Billable</strong></p>
+    <h4>✅ Billable</h4>
+    <ul>
+      <li>Online store orders (paid at checkout, invoice, marked as paid)</li>
+      <li>Draft orders (paid immediately, via invoice, or marked as paid)</li>
+      <li>Imported orders paid in Shopify</li>
+    </ul>
+    <h4>❌ NOT Billable</h4>
+    <ul>
+      <li>Orders not marked as paid</li>
+      <li>Imported orders already marked as paid before import</li>
+      <li>Orders marked as paid only in ERP (not Shopify)</li>
+    </ul>
+    <span class="tag tag-product">#billing</span>
+    <span class="tag tag-process">#orders</span>
+  </div>
+
+  <div class="entry">
+    <h3>Leaky Monetization</h3>
+    <div class="role">Structural Issue #1 Preventing Scale</div>
+    <div class="alert"><strong>⚠️ Definition:</strong> When Shopify doesn't get paid for GMV flowing through the platform.</div>
+    <h4>Root Cause</h4>
+    <p>Order starts in Shopify → goes to ERP → NOT marked as paid in Shopify = <strong>$0 VPF</strong></p>
+    <h4>Prevention</h4>
+    <ul>
+      <li>Ensure partner builds mark orders as paid in Shopify</li>
+      <li>Set clear expectations: "Close out orders on Shopify"</li>
+      <li>Qualify on workflow during discovery</li>
+    </ul>
+    <span class="tag tag-product">#billing</span>
+    <span class="tag tag-process">#qualification</span>
+  </div>
+
+  <div class="entry">
+    <h3>EDI (Electronic Data Interchange)</h3>
+    <div class="role">Computer-to-computer exchange of business documents</div>
+    <h4>Problem</h4>
+    <ul>
+      <li>EDI orders skip Shopify entirely</li>
+      <li>EDI revenue = $0 Billable GMV = $0 VPF</li>
+    </ul>
+    <h4>Qualification</h4>
+    <ul>
+      <li class="red-flag">🚨 <strong>Majority EDI = NOT a fit</strong></li>
+      <li>Small % okay IF merchant understands it lives outside Shopify</li>
+    </ul>
+    <h4>Discovery Questions</h4>
+    <ul>
+      <li>"Do you sell via EDI?"</li>
+      <li>"What percentage of orders/revenue through EDI?"</li>
+    </ul>
+    <span class="tag tag-product">#technical</span>
+    <span class="tag tag-process">#qualification</span>
+  </div>
+
+  <div class="entry">
+    <h3>ERP Integrations</h3>
+    <div class="role">64% of B2B launches DELAYED due to ERP integrations</div>
+    <h4>Discovery Questions</h4>
+    <ul>
+      <li>"Will orders originate in ERP or Shopify?"</li>
+      <li>"What system is Source of Truth?"</li>
+      <li>"What's your current ERP?"</li>
+    </ul>
+    <h4>Risk Assessment</h4>
+    <ul>
+      <li>✅ <strong>Green:</strong> Known connector, Shopify is Source of Truth</li>
+      <li>⚠️ <strong>Yellow:</strong> No known connector, complex sync needs</li>
+      <li class="red-flag">🚨 <strong>Red:</strong> ERP is Source of Truth + orders marked as paid only in ERP</li>
+    </ul>
+    <span class="tag tag-product">#technical</span>
+    <span class="tag tag-process">#qualification</span>
+  </div>
+
+  <div class="entry">
+    <h3>ICP Definition</h3>
+    <div class="role">Current Ideal Customer Profile (after team refocus)</div>
+    <h4>1. B2B First</h4>
+    <ul>
+      <li>Primary business model is B2B</li>
+      <li>May have small D2C component</li>
+    </ul>
+    <h4>2. DTC Wholesalers</h4>
+    <ul>
+      <li>Started as DTC brand</li>
+      <li>Now adding wholesale/B2B</li>
+    </ul>
+    <h4>NOT the ICP</h4>
+    <ul>
+      <li class="red-flag">❌ Primarily D2C or Only D2C</li>
+      <li class="red-flag">❌ Manufacturers focused on industrial/construction</li>
+      <li class="red-flag">❌ Heavy EDI-dependent businesses</li>
+    </ul>
+    <span class="tag tag-product">#icp</span>
+    <span class="tag tag-process">#qualification</span>
+  </div>
+
+  <div class="entry">
+    <h3>Value Messaging — Hybrid Merchants (DTC Wholesalers)</h3>
+    <div class="role">"Shopify is the best platform to run your B2B and DTC business from a single stack, using one admin and even one store."</div>
+    <ul>
+      <li><strong>Unified Commerce:</strong> Reduce TCO, one admin for all channels</li>
+      <li><strong>Leading Platform:</strong> 644M customers, best converting checkout</li>
+      <li><strong>Ease of Use:</strong> Intuitive for employees and buyers</li>
+    </ul>
+    <span class="tag tag-product">#messaging</span>
+    <span class="tag tag-product">#icp</span>
+  </div>
+
+  <div class="entry">
+    <h3>Value Messaging — B2B First</h3>
+    <div class="role">"Streamline your operations with an easy-to-use admin and buyer interface that makes complex workflows feel intuitive."</div>
+    <ul>
+      <li><strong>Self-Serve Purchasing:</strong> Bring tech-averse buyers online</li>
+      <li><strong>Complex Workflows Simplified:</strong> Anyone can manage customer-specific pricing</li>
+      <li><strong>Robust OOTB:</strong> Reduce dependence on specialized staff</li>
+    </ul>
+    <span class="tag tag-product">#messaging</span>
+    <span class="tag tag-product">#icp</span>
+  </div>
+
+  <div class="entry">
+    <h3>Deal Size Trends</h3>
+    <div class="role">B2B deal size is 53% smaller than last year</div>
+    <p>Implication: Need more deals to hit targets → qualification is critical to avoid wasting cycles on bad-fit opps.</p>
+    <span class="tag tag-product">#metrics</span>
+  </div>
+
+  <div class="entry">
+    <h3>On-Platform GMV</h3>
+    <div class="role">B2B GMV that actually runs through and transacts on Shopify</div>
+    <p><strong>Threshold:</strong> ≥ $5M annually for B2B-only opportunities</p>
+    <h4>Exclusions</h4>
+    <ul>
+      <li>EDI revenue</li>
+      <li>Punchout revenue</li>
+      <li>B2B POS revenue</li>
+      <li>Orders not originating/transacting on Shopify</li>
+    </ul>
+    <span class="tag tag-product">#metrics</span>
+    <span class="tag tag-process">#qualification</span>
   </div>
 
   <div class="entry">
@@ -424,7 +578,95 @@
     <span class="tag tag-process">#pmf</span>
   </div>
 
+  <!-- ────────── DISCOVERY QUESTIONS ────────── -->
+  <h2 id="discovery">Discovery Questions — Quick Reference</h2>
+
+  <div class="entry">
+    <h3>Critical Qualification Questions</h3>
+    <div class="role">Use these in every discovery call</div>
+    <ol>
+      <li><strong>"Do you sell via EDI? What percentage?"</strong> — Revenue Qualification</li>
+      <li><strong>"What's your total annual B2B revenue?"</strong> — Revenue Qualification</li>
+      <li><strong>"Do you sell both D2C and B2B from same storefront?"</strong> — ICP Identification</li>
+      <li><strong>"Are B2B buyers required to login?"</strong> — Business Intent</li>
+      <li><strong>"When orders are placed, will they originate in ERP or Shopify?"</strong> — Technical Fit</li>
+      <li><strong>"Do you offer payment terms? What % of buyers on terms?"</strong> — Good Fit Signal</li>
+      <li><strong>"What's your current ERP/tech stack?"</strong> — Integration Complexity</li>
+    </ol>
+    <span class="tag tag-process">#discovery</span>
+    <span class="tag tag-process">#qualification</span>
+  </div>
+
+  <!-- ────────── KEY METRICS ────────── -->
+  <h2 id="metrics">Key Metrics & Thresholds</h2>
+
+  <div class="entry" style="overflow-x: auto;">
+    <table style="width:100%; border-collapse: collapse; font-size: .9rem;">
+      <thead>
+        <tr style="border-bottom: 2px solid var(--accent); text-align: left;">
+          <th style="padding: .6rem .75rem;">Metric</th>
+          <th style="padding: .6rem .75rem;">Threshold</th>
+          <th style="padding: .6rem .75rem;">Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: .6rem .75rem;">On-Platform GMV</td><td style="padding: .6rem .75rem;">≥ $5M annually</td><td style="padding: .6rem .75rem;">Qualification gate</td></tr>
+        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: .6rem .75rem;">Deal Size (&gt;$10M)</td><td style="padding: .6rem .75rem;">Must audit with Callum</td><td style="padding: .6rem .75rem;">PMF assessment required</td></tr>
+        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: .6rem .75rem;">B2B VPF Rate</td><td style="padding: .6rem .75rem;">0.18%</td><td style="padding: .6rem .75rem;">Billing rate</td></tr>
+        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: .6rem .75rem;">DTC VPF Rate</td><td style="padding: .6rem .75rem;">0.40%</td><td style="padding: .6rem .75rem;">Higher rate if not using Companies</td></tr>
+        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: .6rem .75rem;">ERP Launch Delays</td><td style="padding: .6rem .75rem;">64% of launches</td><td style="padding: .6rem .75rem;">Timeline expectation</td></tr>
+        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: .6rem .75rem;">Implementation Timeline</td><td style="padding: .6rem .75rem;">4–6 months ideal</td><td style="padding: .6rem .75rem;">Urgency qualification</td></tr>
+        <tr><td style="padding: .6rem .75rem;">Team Size</td><td style="padding: .6rem .75rem;">35 AEs</td><td style="padding: .6rem .75rem;">Capacity constraint</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ────────── RED FLAGS CHEAT SHEET ────────── -->
+  <h2 id="flags">Red Flags Cheat Sheet</h2>
+
+  <div class="entry">
+    <h3>🚨 Hard Disqualifications</h3>
+    <ul>
+      <li class="red-flag">❌ Majority of business relies on EDI</li>
+      <li class="red-flag">❌ PMF score of 4</li>
+      <li class="red-flag">❌ On-platform GMV &lt; $5M</li>
+      <li class="red-flag">❌ Don't want customers to login</li>
+      <li class="red-flag">❌ Not interested in order origination on Shopify</li>
+      <li class="red-flag">❌ Decision timeline 1–2 years out</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <h3>⚠️ Yellow Flags — Proceed with Caution</h3>
+    <ul>
+      <li>Complex pricing requirements</li>
+      <li>Configurable products</li>
+      <li>ERP without known connector</li>
+      <li>Early evaluation stage (decision in 1–3 months)</li>
+      <li>Flexible implementation timeline (6–12 months)</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <h3>✅ Green Flags — Good Fit</h3>
+    <ul>
+      <li>High % of buyers on payment terms</li>
+      <li>Looking to replace disparate systems</li>
+      <li>Decision within 1 month</li>
+      <li>Implementation within 4–6 months</li>
+      <li>Straightforward product catalog</li>
+      <li>Known ERP connector exists</li>
+      <li>Small/manageable EDI percentage</li>
+    </ul>
+  </div>
+
 </div>
+
+<footer style="max-width:900px; margin:auto; padding:2rem; text-align:center; color:#5f6876; font-size:.85rem; border-top:1px solid #e2e6ed;">
+  <p>Last updated <span id="last-updated"></span> · Maintained by the B2B Sales Team</p>
+</footer>
+
+<script>document.getElementById('last-updated').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });</script>
 
 </body>
 </html>
