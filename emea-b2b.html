@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMEA B2B — B2B Command Centre | Shopify Commercial</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --border: #e2e6ed;
+      --text: #1a1d23;
+      --text-secondary: #5f6876;
+      --accent: #008060;
+      --accent-light: #e6f5f0;
+      --accent-dark: #004c3f;
+      --success: #16a34a;
+      --success-light: #f0fdf4;
+      --warn: #f59e0b;
+      --warn-light: #fffbeb;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,.08);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    a { color: var(--accent); }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    nav .inner { max-width: 1100px; margin: auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    nav .logo { font-weight: 700; font-size: 1.1rem; color: var(--accent); display: flex; align-items: center; gap: .5rem; }
+    nav .logo svg { width: 28px; height: 28px; }
+    nav ul { list-style: none; display: flex; gap: 1.5rem; }
+    nav a { text-decoration: none; color: var(--text-secondary); font-size: .9rem; font-weight: 500; transition: color .2s; }
+    nav a:hover { color: var(--accent); }
+
+    .hamburger { display: none; background: none; border: none; cursor: pointer; }
+    .hamburger svg { width: 24px; height: 24px; stroke: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1100px; margin: auto; padding: 5rem 2rem 3rem;
+      text-align: center;
+    }
+    .hero h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { margin-top: 1rem; font-size: 1.15rem; color: var(--text-secondary); max-width: 660px; margin-left: auto; margin-right: auto; }
+    .hero .cta-row { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .65rem 1.25rem; border-radius: 8px; font-weight: 600; font-size: .9rem;
+      text-decoration: none; transition: all .2s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-dark); color: #fff; }
+    .btn-secondary { background: var(--surface); color: var(--accent); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--accent); }
+
+    /* ── SECTION ── */
+    section { max-width: 1100px; margin: auto; padding: 2.5rem 2rem; }
+    .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: .25rem; }
+    .section-subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: .95rem; }
+
+    /* ── CARDS ── */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+    .card-grid-3 { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      box-shadow: var(--shadow); transition: box-shadow .2s, transform .2s;
+    }
+    .card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+    .card .icon { font-size: 1.6rem; margin-bottom: .75rem; }
+    .card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: .35rem; }
+    .card p { font-size: .9rem; color: var(--text-secondary); }
+    .card a { color: var(--accent); font-weight: 500; text-decoration: none; font-size: .9rem; }
+    .card a:hover { text-decoration: underline; }
+    .card .link-list { margin-top: .75rem; display: flex; flex-direction: column; gap: .35rem; }
+    .card .link-list a { font-size: .85rem; }
+
+    /* ── CHECKLIST ── */
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
+    .checklist li {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1rem 1.25rem;
+      display: flex; align-items: flex-start; gap: .85rem;
+      box-shadow: var(--shadow); cursor: pointer;
+      transition: background .15s;
+    }
+    .checklist li.checked { background: var(--success-light); border-color: #bbf7d0; }
+    .checklist li.checked .check-box { background: var(--success); border-color: var(--success); color: #fff; }
+    .checklist li.checked .check-text { text-decoration: line-through; color: var(--text-secondary); }
+    .check-box {
+      flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px;
+      border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; transition: all .15s; margin-top: 1px;
+    }
+    .check-content { flex: 1; }
+    .check-text { font-weight: 500; font-size: .95rem; }
+    .check-detail { font-size: .85rem; color: var(--text-secondary); margin-top: .15rem; }
+
+    /* ── TIMELINE ── */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 2px; background: var(--border); }
+    .tl-item { position: relative; margin-bottom: 2rem; }
+    .tl-item::before {
+      content: ''; position: absolute; left: -2rem; top: 5px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--accent); border: 3px solid var(--accent-light);
+    }
+    .tl-item h3 { font-size: 1.05rem; font-weight: 600; }
+    .tl-item p { font-size: .9rem; color: var(--text-secondary); margin-top: .25rem; }
+    .tl-item ul { font-size: .9rem; color: var(--text-secondary); margin-top: .35rem; padding-left: 1.2rem; }
+    .tl-item ul li { margin-bottom: .2rem; cursor: default; background: none; border: none; padding: 0; box-shadow: none; display: list-item; }
+
+    /* ── ACCORDION ── */
+    details {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); margin-bottom: .75rem;
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    summary {
+      padding: 1rem 1.25rem; font-weight: 600; cursor: pointer;
+      font-size: .95rem; list-style: none; display: flex; justify-content: space-between; align-items: center;
+    }
+    summary::after { content: '+'; font-size: 1.2rem; color: var(--text-secondary); transition: transform .2s; }
+    details[open] summary::after { content: '−'; }
+    details .content { padding: 0 1.25rem 1.25rem; font-size: .9rem; color: var(--text-secondary); line-height: 1.7; }
+    details .content a { display: inline; }
+
+    /* ── PROGRESS BAR ── */
+    .progress-bar-container { max-width: 1100px; margin: -1rem auto 0; padding: 0 2rem; }
+    .progress-wrap {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .6rem; }
+    .progress-header span { font-size: .9rem; font-weight: 600; }
+    .progress-header .pct { color: var(--accent); }
+    .progress-track { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--accent); border-radius: 99px; width: 0%; transition: width .4s ease; }
+
+    /* ── FOOTER ── */
+    footer {
+      max-width: 1100px; margin: auto; padding: 3rem 2rem;
+      text-align: center; color: var(--text-secondary); font-size: .85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── TWO-COL ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+
+    /* ── BADGE ── */
+    .badge {
+      display: inline-block; padding: .2rem .6rem; border-radius: 6px;
+      font-size: .75rem; font-weight: 600; margin-left: .5rem;
+    }
+    .badge-required { background: #fee2e2; color: #dc2626; }
+    .badge-week { background: var(--accent-light); color: var(--accent-dark); }
+    .badge-optional { background: #f3f4f6; color: #6b7280; }
+
+    /* ── TABS ── */
+    .tabs { display: flex; gap: .5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .tab-btn {
+      padding: .5rem 1rem; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--surface); font-size: .85rem; font-weight: 600; cursor: pointer;
+      transition: all .15s; color: var(--text-secondary);
+    }
+    .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── CALLOUT ── */
+    .callout {
+      background: var(--accent-light); border: 1px solid #b8e6d6;
+      border-radius: var(--radius); padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem; font-size: .9rem;
+    }
+    .callout strong { color: var(--accent-dark); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .card-grid, .two-col { grid-template-columns: 1fr; }
+      nav ul { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem 2rem; gap: 1rem; }
+      nav ul.open { display: flex; }
+      .hamburger { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ────────────────── NAV ────────────────── -->
+<nav>
+  <div class="inner">
+    <div class="logo">
+      <svg viewBox="0 0 109 124" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M95.8 28.5c-.2-1.3-1.2-2-2.1-2.1-1-.1-21-1.6-21-1.6s-14-13.8-15.5-15.3c-1.5-1.5-4.4-.5-5.5-.2-.2 0-3 .9-7.6 2.4C41.2 3.3 36.2 0 30.6 0 16.2 0 9.3 17.8 7.1 26.9c-5.8 1.8-9.9 3.1-10.4 3.2C-1 30.8-1 31-1.3 33.4L0 108.8l75.6 14.2 33.1-8.2C108.7 114.8 96 29.8 95.8 28.5z" fill="#95BF47"/><path d="M93.7 26.4c-1-.1-21-1.6-21-1.6s-14-13.8-15.5-15.3c-.6-.6-1.3-.8-2.1-.9l-5.3 108.2L108.7 114.8S96 29.8 95.8 28.5c-.2-1.3-1.2-2-2.1-2.1" fill="#5E8E3E"/><path d="M60.2 42.8l-9.9 29.5s-8.7-4.6-19.2-4.6C17.3 67.7 17 77.4 17 79.6c.4 13.8 37.2 16.9 39.3 49.5 1.6 25.6-13.6 43.1-35.5 44.5-26.3 1.6-40.8-13.9-40.8-13.9l5.6-23.7s14.3 10.8 25.7 10.1c7.5-.5 10.1-6.5 9.9-10.8-.6-17.7-30.7-16.7-32.6-46.8C-12.8 60.8 6.8 33 37.2 31c11.8-.8 17.9 3.3 17.9 3.3" fill="#fff"/></svg>
+      <a href="index.html" style="text-decoration:none;color:inherit;">B2B Command Centre — EMEA B2B</a>
+    </div>
+    <button class="hamburger" onclick="document.querySelector('nav ul').classList.toggle('open')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <ul>
+      <li><a href="#process">Sales Process</a></li>
+      <li><a href="#b2b-hub">B2B Hub</a></li>
+      <li><a href="dashboards.html">Dashboards</a></li>
+      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="discovery-questions.html">Discovery Qs</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ────────────────── HERO ────────────────── -->
+<div class="hero">
+  <h1>Welcome to the <span>EMEA B2B Command Centre</span></h1>
+  <p>This is your single hub for everything you need to ramp, build pipeline, and close merchants in your first 90 days.</p>
+  <div class="cta-row">
+    <a href="https://b2b-sales-hub.quick.shopify.io/" target="_blank" class="btn btn-primary">Open B2B Sales Hub &rarr;</a>
+    <a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank" class="btn btn-secondary">The Hive — B2B Product Hub</a>
+    <a href="https://vault.shopify.io/docs/craft/18772-Commercial/Revenue-Handbooks/account-executive-handbook" target="_blank" class="btn btn-secondary">AE Handbook</a>
+    <a href="dashboards.html" class="btn btn-secondary">📊 Key Dashboards</a>
+    <a href="ai-tools.html" class="btn btn-secondary">🤖 AI Productivity Boosters</a>
+    <a href="working-with-se.html" class="btn btn-secondary">🤝 Working with your SE</a>
+    <a href="closed-won-checklist.html" class="btn btn-secondary">✅ Closed Won Checklist</a>
+    <a href="discovery-questions.html" class="btn btn-secondary">🔍 Discovery Questions</a>
+    <a href="second-brain.html" class="btn btn-secondary">📓 Second Brain</a>
+    <a href="knowledge-partner.html" class="btn btn-secondary">🧠 Knowledge Partner Prompt</a>
+  </div>
+</div>
+
+<!-- ────────────────── KEY LINKS ────────────────── -->
+<section id="links">
+  <h2 class="section-title">Quick Links</h2>
+  <p class="section-subtitle">Bookmark these — you'll use them constantly.</p>
+  <div class="card-grid card-grid-3">
+    <a href="https://b2b-sales-hub.quick.shopify.io/" target="_blank" class="card" style="text-decoration:none;">
+      <div class="icon">🌐</div>
+      <h3>B2B Sales Hub</h3>
+      <p>Central portal for the B2B sales team.</p>
+    </a>
+    <a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank" class="card" style="text-decoration:none;">
+      <div class="icon">🐝</div>
+      <h3>The Hive — B2B Product Hub</h3>
+      <p>Features, battle cards, pitch decks, case studies, demos.</p>
+    </a>
+    <a href="https://vault.shopify.io/docs/craft/18772-Commercial/Revenue-Handbooks/account-executive-handbook" target="_blank" class="card" style="text-decoration:none;">
+      <div class="icon">📘</div>
+      <h3>AE Handbook</h3>
+      <p>Your role, responsibilities, sales process, and KPIs.</p>
+    </a>
+    <a href="https://vault.shopify.io/teams/16684-Sales-B2B-MM-LA" target="_blank" class="card" style="text-decoration:none;">
+      <div class="icon">👥</div>
+      <h3>Sales B2B MM LA — Vault Team</h3>
+      <p>Your team page. Members, projects, and Slack channels.</p>
+    </a>
+    <a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D" target="_blank" class="card" style="text-decoration:none;">
+      <div class="icon">🎓</div>
+      <h3>Revenue L&D</h3>
+      <p>All learning programs and enablement for Commercial.</p>
+    </a>
+    <a href="dashboards.html" class="card" style="text-decoration:none;">
+      <div class="icon">📊</div>
+      <h3>Key Dashboards</h3>
+      <p>Launch activation, revenue lookup, rep performance, attainment leaderboard, and Salesforce.</p>
+    </a>
+    <a href="ai-tools.html" class="card" style="text-decoration:none;">
+      <div class="icon">🤖</div>
+      <h3>AI Productivity Boosters</h3>
+      <p>POV generators, partner recommenders, website audits, agent builders, and more.</p>
+    </a>
+    <a href="https://docs.google.com/spreadsheets/d/1tmrB57XHxNbSYsPyJDbRbKnwZ_4p-VmLyesUA-QqmNg/edit?gid=348573956#gid=348573956" target="_blank" class="card" style="text-decoration:none;">
+      <div class="icon">📈</div>
+      <h3>Global B2B Forecast Doc</h3>
+      <p>Live forecast spreadsheet for the global B2B team.</p>
+    </a>
+    <a href="closed-won-checklist.html" class="card" style="text-decoration:none;">
+      <div class="icon">✅</div>
+      <h3>Closed Won Checklist</h3>
+      <p>Revenue, products, launch, contacts, contracts, notes, and files — everything needed to close cleanly.</p>
+    </a>
+    <a href="discovery-questions.html" class="card" style="text-decoration:none;">
+      <div class="icon">🔍</div>
+      <h3>Discovery Questions</h3>
+      <p>Full question bank for qualifying and scoping B2B opportunities — commercial, functional, and framework.</p>
+    </a>
+    <a href="second-brain.html" class="card" style="text-decoration:none;">
+      <div class="icon">📓</div>
+      <h3>Second Brain — B2B Knowledge Base</h3>
+      <p>Processes, technical concepts, and business context for B2B sales.</p>
+    </a>
+    <a href="knowledge-partner.html" class="card" style="text-decoration:none;">
+      <div class="icon">🧠</div>
+      <h3>Knowledge Partner Prompt</h3>
+      <p>AI prompt to build your personal "Second Brain" during onboarding.</p>
+    </a>
+  </div>
+</section>
+
+<!-- ────────────────── SALES PROCESS ────────────────── -->
+<section id="process">
+  <h2 class="section-title">Sales Process & Merchant Journey</h2>
+  <p class="section-subtitle">From the <a href="https://vault.shopify.io/docs/craft/18772-Commercial/Revenue-Handbooks/account-executive-handbook" target="_blank">AE Handbook</a>. You own the merchant relationship from inbound lead / qualified opportunity through to launch.</p>
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon">🎯</div>
+      <h3>1. Pre-Qualification</h3>
+      <p>SDRs research and identify high-fit accounts, execute outbound cadences (email, phone, LinkedIn). AEs own inbound leads and qualify for opportunities.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔍</div>
+      <h3>2. Discovery</h3>
+      <p>Run qualification — fit, authority, need, timing. Document merchant goals/pain points in Salesforce. Identify champion and decision-making process. Use B2B Qualification Questions.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🤝</div>
+      <h3>3. Handoff to AE</h3>
+      <p>SDR provides clear handoff notes (qualification summary, goals, next steps). AE takes ownership, runs deeper discovery, builds business case. Attach partners early via Crossbeam.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🖥️</div>
+      <h3>4. Evaluation</h3>
+      <p>AE owns relationship and sales process. SE owns solution design and technical validation. Collaborate on tailored demos. Navigate champion + economic buyer.</p>
+    </div>
+    <div class="card">
+      <div class="icon">📝</div>
+      <h3>5. Negotiation & Close</h3>
+      <p>Negotiate terms via CPQ. Route non-standard deals through Deal Desk. Contracts via Ironclad (in Salesforce). Use B2B Closed-Won Checklist and B2B Opportunity Valuation job aids.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🚀</div>
+      <h3>6. Onboarding → Launch</h3>
+      <p>Own relationship through launch. Monthly check-ins pre-launch. Collaborate with SE to remove blockers. Launch = 0.5% committed GMV realized. Clean handoff to CSM with documented context.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────── TOOLS ────────────────── -->
+<section id="tools">
+  <h2 class="section-title">Your Tech Stack</h2>
+  <p class="section-subtitle">Tools from the AE Handbook — get access set up in your first week.</p>
+  <div class="card-grid card-grid-3">
+    <div class="card"><div class="icon">💼</div><h3>Salesforce</h3><p>CRM and system of record. Opportunity management, stages, attribution, territories. CPQ for quote configuration. Ironclad for contracts.</p></div>
+    <div class="card"><div class="icon">📧</div><h3>Salesloft</h3><p>Email engagement platform. Build multi-step outbound cadences, demo booking workflows, and track activity.</p></div>
+    <div class="card"><div class="icon">📊</div><h3>Copilot</h3><p>Single view of accounts with intent signals and usage validation. Use for account research and prioritization.</p></div>
+    <div class="card"><div class="icon">📑</div><h3>Seismic</h3><p>Sales content hub. One-pagers, pitch decks, battle cards, and case studies. Content is being migrated to Vault/The Hive.</p></div>
+    <div class="card"><div class="icon">🔗</div><h3>LinkedIn Sales Navigator</h3><p>Contact intelligence and relationship mapping. Find decision-makers and build multi-threaded relationships.</p></div>
+    <div class="card"><div class="icon">🔄</div><h3>Crossbeam</h3><p>Partner overlap signals. Identify best-fit partners via pipeline overlap in Copilot (in Salesforce).</p></div>
+  </div>
+</section>
+
+<!-- ────────────────── B2B HUB ────────────────── -->
+<section id="b2b-hub">
+  <h2 class="section-title">The Hive — B2B Product Hub</h2>
+  <p class="section-subtitle">Your go-to resource for everything B2B. <a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank">Open in Vault &rarr;</a></p>
+
+  <div class="two-col">
+    <div>
+      <details>
+        <summary>B2B Features & Solutions</summary>
+        <div class="content">
+          Deep-dive docs on every B2B feature area:<br><br>
+          <strong>Companies</strong> · <strong>Catalogs & Pricing</strong> · <strong>Payments</strong> · <strong>Checkout</strong> · <strong>Storefront</strong> · <strong>Customer Accounts & Self-Serve</strong> · <strong>Admin Operations</strong> · <strong>Blended vs Dedicated Stores</strong> · <strong>APIs & Integrations</strong>
+          <br><br><a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank">→ Open The Hive</a>
+        </div>
+      </details>
+      <details>
+        <summary>Pre-Adoption Resources</summary>
+        <div class="content">
+          <strong>B2B Overview</strong> · <strong>Audience & Fit</strong> · <strong>Discovery</strong> · <strong>Positioning</strong> · <strong>Objection Handling (Q3/Q4 2025)</strong> · <strong>Tripwires & Talk Tracks</strong> · <strong>Glossary</strong> · <strong>Build a Demo Store using Foundry</strong>
+          <br><br><a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank">→ Open The Hive</a>
+        </div>
+      </details>
+      <details>
+        <summary>Competitor Battle Cards</summary>
+        <div class="content">
+          <strong>B2B Competitor Research (Dec 2024)</strong> · <strong>B2B Competitive Landscape</strong><br>
+          <strong>BigCommerce:</strong> Battle Card, One-Pager, Compete Deck<br>
+          <strong>Adobe:</strong> Battle Card, Comparison Chart<br>
+          <strong>Objection Handling deck</strong> (Q3/Q4 2025)
+          <br><br><a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank">→ Open The Hive</a>
+        </div>
+      </details>
+      <details>
+        <summary>B2B Bites Video Series</summary>
+        <div class="content">
+          High-energy videos covering:<br><br>
+          🎬 What User Friendly Means in B2B (3:24)<br>
+          🎬 Moving Beyond Migration to Transformation (3:15)<br>
+          🎬 Winning the Integration Conversation (4:27)<br>
+          🎬 Realities of B2B in 2025 (2:24)<br>
+          🎬 B2B isn't DTC: The Playbook Shift (3:55)<br>
+          🎬 Empower Sales Reps: Long Tail to Self-Serve
+          <br><br><a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank">→ Open The Hive</a>
+        </div>
+      </details>
+    </div>
+    <div>
+      <details>
+        <summary>Pricing & Opportunity Valuation</summary>
+        <div class="content">
+          <strong>B2B Pricing - VPF and Billing</strong><br>
+          <strong>B2B Pricing - Submitting to Deal Desk</strong><br>
+          <strong>B2B Pricing - FAQs</strong><br>
+          <strong>B2B Order Origination and Valuing Opportunities</strong>
+          <br><br><a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank">→ Open The Hive</a>
+        </div>
+      </details>
+      <details>
+        <summary>Pitch Decks</summary>
+        <div class="content">
+          <strong>Hybrid Value Deck (NA)</strong> · <strong>Hybrid Value Deck (FR)</strong><br>
+          <strong>B2B First Value Deck (NA)</strong><br>
+          <strong>B2B Enterprise Value Deck (AMER)</strong><br>
+          <strong>B2B Value Deck (China)</strong>
+          <br><br><a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank">→ Open The Hive</a>
+        </div>
+      </details>
+      <details>
+        <summary>Case Studies</summary>
+        <div class="content">
+          <strong>Snyder Performance Engineering</strong> (Plus B2B) · <strong>AMR Hair & Beauty</strong> · <strong>Allied Medical</strong> · <strong>Industry West</strong> (Enterprise) · <strong>Carrier</strong> (Enterprise) · <strong>Who is Elijah</strong> (Plus & B2B) · <strong>Kulani Kinis</strong>
+          <br><br><a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank">→ Open The Hive</a>
+        </div>
+      </details>
+      <details>
+        <summary>Reprise Click-Through Demos</summary>
+        <div class="content">
+          Interactive leave-behind demos by region:<br><br>
+          🎮 Automotive Version<br>
+          🎮 EMEA / UK<br>
+          🎮 APAC / ANZ<br>
+          🎮 AMER
+          <br><br><a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank">→ Open The Hive</a>
+        </div>
+      </details>
+      <details>
+        <summary>Job Aids</summary>
+        <div class="content">
+          <strong>B2B Closed-Won Checklist</strong> — steps to close cleanly<br>
+          <strong>B2B Calculate the Value of your Opportunity</strong> — sizing tool<br>
+          <strong>B2B Qualification Questions</strong> — discovery question bank
+          <br><br><a href="https://vault.shopify.io/docs/craft/18772-Commercial/L-D/Revenue-Enablement/non-categorized/B2B-Product-Hub" target="_blank">→ Open The Hive</a>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────── FOOTER ────────────────── -->
+<footer>
+  <p>Built for the <strong>Sales B2B MM LA</strong> Acquisition Team · <a href="https://vault.shopify.io/teams/16684-Sales-B2B-MM-LA" target="_blank">Vault Team Page</a></p>
+  <p style="margin-top:.5rem;">Questions? Reach out to your manager or post in <strong>#help-rev-lnd</strong> on Slack</p>
+</footer>
+
+</body>
+</html>
