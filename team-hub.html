@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B2B is our Forte — Team Hub</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf9f7;
+      --surface: #ffffff;
+      --border: #e8e4df;
+      --text: #1a1a2e;
+      --text-secondary: #6b6b80;
+      --accent-1: #7c3aed;
+      --accent-2: #f59e0b;
+      --accent-3: #06b6d4;
+      --accent-4: #ec4899;
+      --accent-5: #10b981;
+      --accent-6: #f97316;
+      --accent-7: #6366f1;
+      --accent-8: #ef4444;
+      --gradient: linear-gradient(135deg, #7c3aed 0%, #ec4899 50%, #f59e0b 100%);
+      --gradient-subtle: linear-gradient(135deg, rgba(124,58,237,.06) 0%, rgba(236,72,153,.06) 50%, rgba(245,158,11,.06) 100%);
+      --radius: 16px;
+      --shadow: 0 2px 8px rgba(0,0,0,.05);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,.1);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── FLOATING NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,249,247,.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    nav .inner {
+      max-width: 1100px; margin: auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    nav .logo {
+      font-weight: 800; font-size: 1.1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    nav .logo a {
+      text-decoration: none;
+      background: var(--gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    nav .back-link {
+      text-decoration: none; font-size: .85rem; font-weight: 600;
+      color: var(--text-secondary); transition: color .2s;
+    }
+    nav .back-link:hover { color: var(--accent-1); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1100px; margin: auto;
+      padding: 5rem 2rem 3rem; text-align: center;
+    }
+    .hero h1 {
+      font-size: 3.4rem; font-weight: 900;
+      letter-spacing: -.03em; line-height: 1.1;
+      background: var(--gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero .subtitle {
+      margin-top: 1rem; font-size: 1.35rem;
+      color: var(--text-secondary); font-weight: 500;
+    }
+    .hero .vibe {
+      margin-top: .6rem; font-size: 1.8rem;
+      letter-spacing: .3rem;
+    }
+
+    /* ── VISION SECTION ── */
+    .vision {
+      max-width: 800px; margin: 0 auto;
+      padding: 0 2rem 3rem; text-align: center;
+    }
+    .vision-card {
+      background: var(--surface);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 3rem 2rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .vision-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: var(--gradient);
+    }
+    .vision-card h2 {
+      font-size: 1.6rem; font-weight: 800;
+      margin-bottom: .75rem;
+    }
+    .vision-card .placeholder {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-style: italic;
+      padding: 2rem 0;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      background: var(--gradient-subtle);
+    }
+
+    /* ── BUTTON GRID ── */
+    .hub-section {
+      max-width: 1100px; margin: 0 auto;
+      padding: 1rem 2rem 4rem;
+    }
+    .hub-section h2 {
+      text-align: center;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .hub-btn {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1.5rem 1.75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700; font-size: 1.05rem;
+      box-shadow: var(--shadow);
+      transition: all .25s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .hub-btn::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 4px; height: 100%;
+      border-radius: 4px 0 0 4px;
+      transition: width .25s ease;
+    }
+    .hub-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .hub-btn:hover::before { width: 6px; }
+
+    .hub-btn .emoji {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+    .hub-btn .label { z-index: 1; }
+
+    .hub-btn.color-1::before { background: var(--accent-1); }
+    .hub-btn.color-1:hover { border-color: var(--accent-1); }
+    .hub-btn.color-2::before { background: var(--accent-2); }
+    .hub-btn.color-2:hover { border-color: var(--accent-2); }
+    .hub-btn.color-3::before { background: var(--accent-3); }
+    .hub-btn.color-3:hover { border-color: var(--accent-3); }
+    .hub-btn.color-4::before { background: var(--accent-4); }
+    .hub-btn.color-4:hover { border-color: var(--accent-4); }
+    .hub-btn.color-5::before { background: var(--accent-5); }
+    .hub-btn.color-5:hover { border-color: var(--accent-5); }
+    .hub-btn.color-6::before { background: var(--accent-6); }
+    .hub-btn.color-6:hover { border-color: var(--accent-6); }
+    .hub-btn.color-7::before { background: var(--accent-7); }
+    .hub-btn.color-7:hover { border-color: var(--accent-7); }
+    .hub-btn.color-8::before { background: var(--accent-8); }
+    .hub-btn.color-8:hover { border-color: var(--accent-8); }
+
+    /* ── SECTION CONTENT (hidden by default, shown when active) ── */
+    .section-content {
+      max-width: 900px; margin: 0 auto;
+      padding: 0 2rem 3rem;
+      display: none;
+    }
+    .section-content.active { display: block; }
+
+    .section-content .content-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .section-content .content-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .section-content .content-card h3 {
+      font-size: 1.3rem; font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .section-content .content-card .placeholder-text {
+      color: var(--text-secondary);
+      font-style: italic;
+      font-size: .95rem;
+      padding: 1.5rem;
+      background: var(--gradient-subtle);
+      border-radius: 12px;
+      border: 1px dashed var(--border);
+      text-align: center;
+    }
+    .back-to-hub {
+      display: inline-flex; align-items: center; gap: .4rem;
+      margin-bottom: 1.25rem;
+      font-size: .9rem; font-weight: 600;
+      color: var(--accent-1);
+      cursor: pointer;
+      border: none; background: none;
+      text-decoration: none;
+      transition: gap .2s;
+    }
+    .back-to-hub:hover { gap: .6rem; }
+
+    .color-1-bar::before { background: var(--accent-1); }
+    .color-2-bar::before { background: var(--accent-2); }
+    .color-3-bar::before { background: var(--accent-3); }
+    .color-4-bar::before { background: var(--accent-4); }
+    .color-5-bar::before { background: var(--accent-5); }
+    .color-6-bar::before { background: var(--accent-6); }
+    .color-7-bar::before { background: var(--accent-7); }
+    .color-8-bar::before { background: var(--accent-8); }
+
+    /* ── FOOTER ── */
+    footer {
+      max-width: 1100px; margin: auto; padding: 3rem 2rem;
+      text-align: center; color: var(--text-secondary); font-size: .85rem;
+      border-top: 1px solid var(--border);
+    }
+    footer .hearts {
+      font-size: 1.2rem; margin-bottom: .5rem;
+      letter-spacing: .2rem;
+    }
+
+    /* ── CONFETTI DOTS (decorative) ── */
+    .confetti-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .confetti-dot {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      opacity: .18;
+      animation: floatUp 6s ease-in-out infinite;
+    }
+    @keyframes floatUp {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.2rem; }
+      .hero .subtitle { font-size: 1.1rem; }
+      .btn-grid { grid-template-columns: 1fr; }
+      .vision-card { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ────────────────── NAV ────────────────── -->
+<nav>
+  <div class="inner">
+    <div class="logo"><a href="team-hub.html">B2B is our Forte</a></div>
+    <a href="index.html" class="back-link">&larr; Back to Command Centre</a>
+  </div>
+</nav>
+
+<!-- ────────────────── HERO ────────────────── -->
+<div class="hero confetti-wrap" id="hero">
+  <div class="vibe">&#127881; &#128640; &#11088; &#128170; &#127775;</div>
+  <h1>B2B is our Forte</h1>
+  <p class="subtitle">Welcome to our Team Hub!</p>
+
+  <!-- decorative confetti dots -->
+  <div class="confetti-dot" style="top:10%;left:5%;background:#7c3aed;animation-delay:0s;"></div>
+  <div class="confetti-dot" style="top:20%;left:90%;background:#ec4899;animation-delay:.5s;"></div>
+  <div class="confetti-dot" style="top:60%;left:15%;background:#f59e0b;animation-delay:1s;"></div>
+  <div class="confetti-dot" style="top:45%;left:85%;background:#06b6d4;animation-delay:1.5s;"></div>
+  <div class="confetti-dot" style="top:75%;left:50%;background:#10b981;animation-delay:2s;"></div>
+  <div class="confetti-dot" style="top:30%;left:70%;background:#f97316;animation-delay:.8s;"></div>
+  <div class="confetti-dot" style="top:80%;left:25%;background:#6366f1;animation-delay:1.2s;"></div>
+  <div class="confetti-dot" style="top:15%;left:45%;background:#ef4444;animation-delay:1.8s;"></div>
+</div>
+
+<!-- ────────────────── TEAM VISION ────────────────── -->
+<div class="vision">
+  <div class="vision-card">
+    <h2>&#127919; Our Team Vision</h2>
+    <div class="placeholder">
+      This space is for us to fill together as a team.<br>
+      Let's build something we're all proud of.
+    </div>
+  </div>
+</div>
+
+<!-- ────────────────── HUB BUTTONS ────────────────── -->
+<div class="hub-section" id="hub-buttons">
+  <h2>Your Go-To Playbook &#128071;</h2>
+  <div class="btn-grid">
+    <a class="hub-btn color-1" onclick="showSection('weekly-expectations')" href="#section-detail">
+      <span class="emoji">&#128197;</span>
+      <span class="label">Weekly Expectations</span>
+    </a>
+    <a class="hub-btn color-2" onclick="showSection('forecasting')" href="#section-detail">
+      <span class="emoji">&#128200;</span>
+      <span class="label">Forecasting</span>
+    </a>
+    <a class="hub-btn color-3" onclick="showSection('dashboards')" href="#section-detail">
+      <span class="emoji">&#128202;</span>
+      <span class="label">Dashboards</span>
+    </a>
+    <a class="hub-btn color-4" onclick="showSection('values')" href="#section-detail">
+      <span class="emoji">&#128156;</span>
+      <span class="label">Our Values</span>
+    </a>
+    <a class="hub-btn color-5" onclick="showSection('non-negotiables')" href="#section-detail">
+      <span class="emoji">&#9989;</span>
+      <span class="label">Our Non-Negotiables</span>
+    </a>
+    <a class="hub-btn color-6" onclick="showSection('resources')" href="#section-detail">
+      <span class="emoji">&#128218;</span>
+      <span class="label">Team Resources</span>
+    </a>
+    <a class="hub-btn color-7" onclick="showSection('best-practices')" href="#section-detail">
+      <span class="emoji">&#128161;</span>
+      <span class="label">Best Practices</span>
+    </a>
+    <a class="hub-btn color-8" onclick="showSection('deal-craft')" href="#section-detail">
+      <span class="emoji">&#127919;</span>
+      <span class="label">Deal Craft</span>
+    </a>
+  </div>
+</div>
+
+<!-- ────────────────── SECTION DETAIL PANELS ────────────────── -->
+<div id="section-detail">
+
+  <div class="section-content" id="sec-weekly-expectations">
+    <button class="back-to-hub" onclick="hideSection()">&larr; Back to Hub</button>
+    <div class="content-card color-1-bar">
+      <h3>&#128197; Weekly Expectations</h3>
+      <div class="placeholder-text">Content coming soon — we'll define this together!</div>
+    </div>
+  </div>
+
+  <div class="section-content" id="sec-forecasting">
+    <button class="back-to-hub" onclick="hideSection()">&larr; Back to Hub</button>
+    <div class="content-card color-2-bar">
+      <h3>&#128200; Forecasting</h3>
+      <div class="placeholder-text">Content coming soon — we'll define this together!</div>
+    </div>
+  </div>
+
+  <div class="section-content" id="sec-dashboards">
+    <button class="back-to-hub" onclick="hideSection()">&larr; Back to Hub</button>
+    <div class="content-card color-3-bar">
+      <h3>&#128202; Dashboards</h3>
+      <div class="placeholder-text">Content coming soon — we'll define this together!</div>
+    </div>
+  </div>
+
+  <div class="section-content" id="sec-values">
+    <button class="back-to-hub" onclick="hideSection()">&larr; Back to Hub</button>
+    <div class="content-card color-4-bar">
+      <h3>&#128156; Our Values</h3>
+      <div class="placeholder-text">Content coming soon — we'll define this together!</div>
+    </div>
+  </div>
+
+  <div class="section-content" id="sec-non-negotiables">
+    <button class="back-to-hub" onclick="hideSection()">&larr; Back to Hub</button>
+    <div class="content-card color-5-bar">
+      <h3>&#9989; Our Non-Negotiables</h3>
+      <div class="placeholder-text">Content coming soon — we'll define this together!</div>
+    </div>
+  </div>
+
+  <div class="section-content" id="sec-resources">
+    <button class="back-to-hub" onclick="hideSection()">&larr; Back to Hub</button>
+    <div class="content-card color-6-bar">
+      <h3>&#128218; Team Resources</h3>
+      <div class="placeholder-text">Content coming soon — we'll define this together!</div>
+    </div>
+  </div>
+
+  <div class="section-content" id="sec-best-practices">
+    <button class="back-to-hub" onclick="hideSection()">&larr; Back to Hub</button>
+    <div class="content-card color-7-bar">
+      <h3>&#128161; Best Practices</h3>
+      <div class="placeholder-text">Content coming soon — we'll define this together!</div>
+    </div>
+  </div>
+
+  <div class="section-content" id="sec-deal-craft">
+    <button class="back-to-hub" onclick="hideSection()">&larr; Back to Hub</button>
+    <div class="content-card color-8-bar">
+      <h3>&#127919; Deal Craft</h3>
+      <div class="placeholder-text">Content coming soon — we'll define this together!</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ────────────────── FOOTER ────────────────── -->
+<footer>
+  <div class="hearts">&#128156; &#128155; &#128153; &#128154; &#129505;</div>
+  <p>Built with love by the <strong>B2B Forte</strong> crew</p>
+  <p style="margin-top:.4rem;">Let's go get it &#128170;</p>
+</footer>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+    const target = document.getElementById('sec-' + id);
+    if (target) {
+      target.classList.add('active');
+      document.getElementById('hub-buttons').style.display = 'none';
+    }
+  }
+
+  function hideSection() {
+    document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+    document.getElementById('hub-buttons').style.display = '';
+    document.getElementById('hub-buttons').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+</script>
+
+</body>
+</html>
