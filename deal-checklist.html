@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deal Checklist — B2B Command Centre | Shopify Commercial</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --border: #e2e6ed;
+      --text: #1a1d23;
+      --text-secondary: #5f6876;
+      --accent: #008060;
+      --accent-light: #e6f5f0;
+      --accent-dark: #004c3f;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,.08);
+
+      --stage-1: #6366f1;
+      --stage-2: #8b5cf6;
+      --stage-3: #0ea5e9;
+      --stage-4: #f59e0b;
+      --stage-5: #ef4444;
+      --stage-6: #16a34a;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: var(--accent); }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); padding: 0 2rem;
+    }
+    nav .inner { max-width: 960px; margin: auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    nav .logo { font-weight: 700; font-size: 1.1rem; color: var(--accent); }
+    nav a.back { text-decoration: none; color: var(--text-secondary); font-size: .9rem; font-weight: 500; }
+    nav a.back:hover { color: var(--accent); }
+
+    .container { max-width: 960px; margin: auto; padding: 2.5rem 2rem 4rem; }
+
+    h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: .5rem; }
+    h1 span { color: var(--accent); }
+    .subtitle { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: .5rem; max-width: 700px; }
+    .source-note { color: var(--text-secondary); font-size: .85rem; margin-bottom: 2.5rem; }
+    .source-note a { font-weight: 500; }
+
+    /* ── PIPELINE OVERVIEW ── */
+    .pipeline-overview {
+      display: flex; gap: .5rem; margin-bottom: 3rem; flex-wrap: wrap;
+    }
+    .pipeline-step {
+      flex: 1; min-width: 130px;
+      text-align: center; padding: .75rem .5rem;
+      border-radius: var(--radius);
+      background: var(--surface); border: 1px solid var(--border);
+      box-shadow: var(--shadow); position: relative;
+      cursor: pointer; text-decoration: none; color: inherit;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .pipeline-step:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+    .pipeline-step .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      color: #fff; font-size: .8rem; font-weight: 700; margin-bottom: .35rem;
+    }
+    .pipeline-step .step-label { font-size: .8rem; font-weight: 600; display: block; }
+
+    /* ── STAGE CARD ── */
+    .stage-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      overflow: hidden; margin-bottom: 1.25rem;
+    }
+    .stage-header {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1.25rem 1.5rem; color: #fff;
+    }
+    .stage-number {
+      flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 800;
+    }
+    .stage-header h2 { font-size: 1.25rem; font-weight: 700; }
+    .stage-header p { font-size: .9rem; opacity: .9; margin-top: .15rem; }
+
+    .stage-body { padding: 1.5rem; }
+
+    .stage-columns {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    }
+
+    .stage-body h3 {
+      font-size: .8rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .06em; color: var(--text-secondary);
+      margin-bottom: .75rem; display: flex; align-items: center; gap: .4rem;
+    }
+
+    .criteria-list, .question-list {
+      list-style: none; display: flex; flex-direction: column; gap: .5rem;
+    }
+    .criteria-list li, .question-list li {
+      font-size: .9rem; padding-left: 1.4rem; position: relative; line-height: 1.5;
+    }
+    .criteria-list li::before {
+      content: ''; position: absolute; left: 0; top: 7px;
+      width: 16px; height: 16px; border-radius: 4px;
+      border: 2px solid var(--border);
+    }
+    .question-list li::before {
+      content: '?'; position: absolute; left: 0; top: 0;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--accent-light); color: var(--accent-dark);
+      font-size: .65rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── EXIT GATE ── */
+    .exit-gate {
+      margin-top: 1.25rem; padding: 1rem 1.25rem;
+      background: var(--accent-light); border: 1px solid #b8e6d6;
+      border-radius: var(--radius); font-size: .9rem;
+    }
+    .exit-gate strong { color: var(--accent-dark); }
+
+    /* ── CONNECTOR ── */
+    .connector {
+      display: flex; justify-content: center; padding: .25rem 0;
+      color: var(--border);
+    }
+    .connector svg { width: 24px; height: 24px; }
+
+    /* ── FOOTER ── */
+    footer {
+      max-width: 960px; margin: auto; padding: 2rem;
+      text-align: center; color: var(--text-secondary); font-size: .85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 1.6rem; }
+      .container { padding: 1.5rem 1rem; }
+      .stage-columns { grid-template-columns: 1fr; }
+      .pipeline-overview { gap: .35rem; }
+      .pipeline-step { min-width: 0; padding: .5rem .35rem; }
+      .pipeline-step .step-label { font-size: .7rem; }
+      .stage-header { padding: 1rem 1.25rem; }
+      .stage-body { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="logo">Deal Stage Checklist</div>
+    <a href="javascript:history.back()" class="back">&larr; Back</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Deal <span>Stage Checklist</span></h1>
+  <p class="subtitle">A clear guide to each Salesforce opportunity stage — what criteria must be met and what questions must be answered before advancing a deal.</p>
+  <p class="source-note">Sourced from the <a href="https://vault.shopify.io/docs/craft/18772-Commercial/Revenue-Handbooks/account-executive-handbook" target="_blank">AE Handbook</a> and B2B sales process. See also: <a href="closed-won-checklist.html">Closed Won Checklist</a></p>
+
+  <!-- ── PIPELINE OVERVIEW ── -->
+  <div class="pipeline-overview">
+    <a href="#stage-1" class="pipeline-step">
+      <div class="step-num" style="background:var(--stage-1);">1</div>
+      <span class="step-label">Pre-Qualified</span>
+    </a>
+    <a href="#stage-2" class="pipeline-step">
+      <div class="step-num" style="background:var(--stage-2);">2</div>
+      <span class="step-label">Envision</span>
+    </a>
+    <a href="#stage-3" class="pipeline-step">
+      <div class="step-num" style="background:var(--stage-3);">3</div>
+      <span class="step-label">Solution</span>
+    </a>
+    <a href="#stage-4" class="pipeline-step">
+      <div class="step-num" style="background:var(--stage-4);">4</div>
+      <span class="step-label">Demonstrate</span>
+    </a>
+    <a href="#stage-5" class="pipeline-step">
+      <div class="step-num" style="background:var(--stage-5);">5</div>
+      <span class="step-label">Deal Craft</span>
+    </a>
+    <a href="#stage-6" class="pipeline-step">
+      <div class="step-num" style="background:var(--stage-6);">6</div>
+      <span class="step-label">Closed</span>
+    </a>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       STAGE 1 — PRE-QUALIFIED
+       ══════════════════════════════════════════════════════ -->
+  <div class="stage-card" id="stage-1">
+    <div class="stage-header" style="background:var(--stage-1);">
+      <div class="stage-number">1</div>
+      <div>
+        <h2>Pre-Qualified</h2>
+        <p>Initial lead qualified for fit, authority, and B2B relevance</p>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-columns">
+        <div>
+          <h3>Criteria to Meet</h3>
+          <ul class="criteria-list">
+            <li>Company fit confirmed — industry, revenue size, and B2B use case align with ICP</li>
+            <li>Contact is a decision-maker or a champion has been identified</li>
+            <li>Basic need for B2B wholesale/trade channel validated</li>
+            <li>Lead source and attribution documented in Salesforce</li>
+            <li>Account research completed (website, LinkedIn, existing Shopify presence)</li>
+            <li>Opportunity created in Salesforce with correct territory and segment</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Key Questions to Answer</h3>
+          <ul class="question-list">
+            <li>Is this a net-new merchant or an existing Shopify merchant expanding to B2B?</li>
+            <li>What is their current B2B platform or process (manual, competitor, none)?</li>
+            <li>What is the estimated annual B2B GMV?</li>
+            <li>Does the merchant sell DTC today, or is this B2B-first?</li>
+            <li>Is there a compelling event or timeline driving urgency?</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exit-gate">
+        <strong>Move to Envision when:</strong> You've confirmed the merchant fits the ICP, a qualified contact is engaged, and you have a discovery call scheduled or completed.
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       STAGE 2 — ENVISION
+       ══════════════════════════════════════════════════════ -->
+  <div class="stage-card" id="stage-2">
+    <div class="stage-header" style="background:var(--stage-2);">
+      <div class="stage-number">2</div>
+      <div>
+        <h2>Envision</h2>
+        <p>Discovery complete — merchant's vision, goals, and pain points understood</p>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-columns">
+        <div>
+          <h3>Criteria to Meet</h3>
+          <ul class="criteria-list">
+            <li>Discovery call completed and notes documented in Salesforce</li>
+            <li>Merchant goals and pain points clearly articulated</li>
+            <li>Champion identified and actively engaged</li>
+            <li>Decision-making process mapped — who decides, who influences, approval steps</li>
+            <li>Timeline and key milestones understood (go-live target, budget cycle)</li>
+            <li>Current tech stack and integrations catalogued (ERP, payments, fulfillment)</li>
+            <li>Competitive landscape understood — are they evaluating alternatives?</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Key Questions to Answer</h3>
+          <ul class="question-list">
+            <li>What does their ideal B2B buying experience look like for their customers?</li>
+            <li>Who are the economic buyer, technical buyer, and end users?</li>
+            <li>What is the approval and procurement process? How long does it take?</li>
+            <li>What is driving the need for change now? What happens if they do nothing?</li>
+            <li>What does success look like in 6-12 months post-launch?</li>
+            <li>Are they evaluating other platforms? What's their evaluation criteria?</li>
+          </ul>
+          <p style="margin-top:1rem; font-size:.85rem; color:var(--text-secondary);">
+            See the full <a href="discovery-questions.html">Discovery Question Bank</a> for deeper qualification.
+          </p>
+        </div>
+      </div>
+      <div class="exit-gate">
+        <strong>Move to Solution when:</strong> You fully understand the merchant's goals, pain points, buying process, and technical requirements — and you can articulate why Shopify B2B is the right fit.
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       STAGE 3 — SOLUTION
+       ══════════════════════════════════════════════════════ -->
+  <div class="stage-card" id="stage-3">
+    <div class="stage-header" style="background:var(--stage-3);">
+      <div class="stage-number">3</div>
+      <div>
+        <h2>Solution</h2>
+        <p>Solution designed and validated against merchant requirements</p>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-columns">
+        <div>
+          <h3>Criteria to Meet</h3>
+          <ul class="criteria-list">
+            <li>Solution Engineer (SE) engaged and attached to the opportunity</li>
+            <li>Technical assessment and scoping completed</li>
+            <li>Solution architecture mapped — blended vs dedicated store, B2B features needed</li>
+            <li>Integration requirements identified (ERP, payments, fulfillment, PIM)</li>
+            <li>Partner identified via Crossbeam and attached if implementation support needed</li>
+            <li>Business case and ROI articulated — value of migrating/adopting Shopify B2B</li>
+            <li>Any product gaps or workarounds documented and communicated to merchant</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Key Questions to Answer</h3>
+          <ul class="question-list">
+            <li>Can Shopify B2B meet all critical technical requirements?</li>
+            <li>What integrations are required and are they supported (native or via partner)?</li>
+            <li>Is a partner needed for implementation? Which partner is the best fit?</li>
+            <li>Blended or dedicated store — what's the right architecture for this merchant?</li>
+            <li>What is the estimated implementation timeline and complexity?</li>
+            <li>Are there any product gaps? Can they be solved with APIs, apps, or workarounds?</li>
+          </ul>
+          <p style="margin-top:1rem; font-size:.85rem; color:var(--text-secondary);">
+            Reference: <a href="working-with-se.html">Working with your SE</a> for SE collaboration best practices.
+          </p>
+        </div>
+      </div>
+      <div class="exit-gate">
+        <strong>Move to Demonstrate when:</strong> The solution is designed, the SE has validated feasibility, and you're ready to show the merchant a tailored demo that maps to their specific requirements.
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       STAGE 4 — DEMONSTRATE
+       ══════════════════════════════════════════════════════ -->
+  <div class="stage-card" id="stage-4">
+    <div class="stage-header" style="background:var(--stage-4);">
+      <div class="stage-number">4</div>
+      <div>
+        <h2>Demonstrate</h2>
+        <p>Tailored demo delivered — merchant has seen proof of value</p>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-columns">
+        <div>
+          <h3>Criteria to Meet</h3>
+          <ul class="criteria-list">
+            <li>Customized demo delivered — tailored to merchant's use case, not a generic walkthrough</li>
+            <li>Key stakeholders attended the demo (champion + economic buyer or delegate)</li>
+            <li>Objections surfaced, documented, and addressed or plan to resolve</li>
+            <li>Merchant confirmed Shopify B2B can meet their core needs</li>
+            <li>Relevant case studies and social proof shared</li>
+            <li>Follow-up action items documented with clear owners and deadlines</li>
+            <li>Digital Sales Room or leave-behind materials shared</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Key Questions to Answer</h3>
+          <ul class="question-list">
+            <li>Did the economic buyer attend or receive a detailed readout?</li>
+            <li>What objections remain unresolved? What is the plan to address them?</li>
+            <li>Has the merchant seen case studies relevant to their industry/use case?</li>
+            <li>Is there consensus among stakeholders that Shopify is the right choice?</li>
+            <li>What are the next steps the merchant has committed to?</li>
+            <li>Are there additional stakeholders who need to be brought into the evaluation?</li>
+          </ul>
+          <p style="margin-top:1rem; font-size:.85rem; color:var(--text-secondary);">
+            Reference: <a href="objections-cheat-sheet.html">B2B Objections Cheat Sheet</a> for handling common objections.
+          </p>
+        </div>
+      </div>
+      <div class="exit-gate">
+        <strong>Move to Deal Craft when:</strong> The merchant has seen a tailored demo, key stakeholders are aligned, major objections are resolved, and the merchant is ready to discuss commercial terms.
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       STAGE 5 — DEAL CRAFT
+       ══════════════════════════════════════════════════════ -->
+  <div class="stage-card" id="stage-5">
+    <div class="stage-header" style="background:var(--stage-5);">
+      <div class="stage-number">5</div>
+      <div>
+        <h2>Deal Craft</h2>
+        <p>Commercial terms negotiated and contract in progress</p>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-columns">
+        <div>
+          <h3>Criteria to Meet</h3>
+          <ul class="criteria-list">
+            <li>Pricing configured in CPQ and aligned with B2B opportunity valuation</li>
+            <li>Deal Desk submission completed (if non-standard pricing or terms)</li>
+            <li>MVF (Merchant Value Framework) created and values aligned</li>
+            <li>Contract routed via Ironclad in Salesforce</li>
+            <li>Trial store set up for the merchant</li>
+            <li>Mutual close plan documented with milestones and deadlines</li>
+            <li>Manager involved in deal review and coaching</li>
+            <li>Go-live date agreed and realistic based on implementation scope</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Key Questions to Answer</h3>
+          <ul class="question-list">
+            <li>Is pricing aligned with the B2B opportunity valuation model?</li>
+            <li>Are payment terms agreed (B2B Payments adoption, DTC Payments, Retail)?</li>
+            <li>Does the go-live date align with the MVF and implementation timeline?</li>
+            <li>Are there any legal or procurement blockers on the merchant side?</li>
+            <li>Has the merchant committed to a credit card on file for the trial store?</li>
+            <li>Is the partner (if applicable) aligned on implementation timeline and scope?</li>
+            <li>Has manager reviewed and approved the deal structure?</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exit-gate">
+        <strong>Move to Closed when:</strong> The contract is signed, MVF is finalized, all Closed Won Checklist items are complete, and the merchant is ready for onboarding and launch.
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       STAGE 6 — CLOSED
+       ══════════════════════════════════════════════════════ -->
+  <div class="stage-card" id="stage-6">
+    <div class="stage-header" style="background:var(--stage-6);">
+      <div class="stage-number">6</div>
+      <div>
+        <h2>Closed</h2>
+        <p>Deal closed-won — all checklist items complete, merchant moving to onboarding</p>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-columns">
+        <div>
+          <h3>Criteria to Meet</h3>
+          <ul class="criteria-list">
+            <li><strong>Revenue:</strong> Correct DTC, B2B, and Retail revenue aligned with MVF</li>
+            <li><strong>Products:</strong> DTC Standard added, B2B Sales Price = $0, POS locations (if applicable), payment products match MVF percentages</li>
+            <li><strong>Launch:</strong> SE attached, partner attached, technical assessment uploaded, go-live date aligned with MVF</li>
+            <li><strong>Contacts:</strong> All engaged contacts uploaded, launch contacts for B2B and DTC identified</li>
+            <li><strong>Contracts:</strong> Trial store set up, credit card on file, MVF completed (incl. B2B and DTC Payments), contract signed</li>
+            <li><strong>Notes:</strong> Digital Sales Room link and discovery call notes in Salesforce</li>
+            <li><strong>Files:</strong> Mutual plan with milestones, email proof of intent, MVF downloaded and attached, proof of manager involvement</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Key Questions to Answer</h3>
+          <ul class="question-list">
+            <li>Have all 7 categories of the Closed Won Checklist been completed?</li>
+            <li>Is the SE ready to begin onboarding and implementation support?</li>
+            <li>Is the partner aligned and ready to start implementation?</li>
+            <li>Has a clean handoff to CSM been documented with full context?</li>
+            <li>Are monthly pre-launch check-ins scheduled?</li>
+            <li>Is the launch target (0.5% committed GMV realized) realistic?</li>
+          </ul>
+          <p style="margin-top:1rem; font-size:.85rem; color:var(--text-secondary);">
+            Use the full interactive <a href="closed-won-checklist.html">Closed Won Checklist</a> to track every item.
+          </p>
+        </div>
+      </div>
+      <div class="exit-gate">
+        <strong>Post-Close:</strong> Own the merchant relationship through launch. Run monthly check-ins, collaborate with SE to remove blockers, and ensure a clean handoff to CSM with documented context.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Built for the <strong>B2B Commercial</strong> team · <a href="https://vault.shopify.io/docs/craft/18772-Commercial/Revenue-Handbooks/account-executive-handbook" target="_blank">AE Handbook</a> · <a href="closed-won-checklist.html">Closed Won Checklist</a></p>
+  <p style="margin-top:.5rem;">Last updated <span id="last-updated"></span></p>
+</footer>
+
+<script>
+  document.getElementById('last-updated').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+</script>
+
+</body>
+</html>
