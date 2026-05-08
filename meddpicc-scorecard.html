@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEDDPICC Scorecard | Shopify B2B</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --border: #e2e6ed;
+      --text: #1a1d23;
+      --text-secondary: #5f6876;
+      --accent: #008060;
+      --accent-light: #e6f5f0;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,.08);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    .page-header {
+      background: linear-gradient(135deg, #1a1d23 0%, #2d3239 100%);
+      color: #fff;
+      padding: 2rem 2rem 1.5rem;
+    }
+    .page-header-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; }
+    .page-header h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; }
+    .page-header p { color: #a0a8b4; margin-top: .25rem; font-size: .95rem; }
+    .header-actions { display: flex; gap: .5rem; flex-shrink: 0; margin-top: .25rem; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+    /* Deal switcher */
+    .deal-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .deal-bar label { font-size: .8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+    .deal-tabs { display: flex; gap: .35rem; flex-wrap: wrap; flex: 1; }
+    .deal-tab {
+      padding: .4rem .85rem;
+      border-radius: 8px;
+      font-size: .82rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text-secondary);
+      transition: all .15s;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .deal-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .deal-tab:hover:not(.active) { border-color: #bbb; }
+
+    .deal-info {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+    .deal-info label { font-size: .8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; display: block; margin-bottom: .25rem; }
+    .deal-info input {
+      width: 100%;
+      padding: .5rem .75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: .9rem;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--bg);
+      transition: border-color .15s;
+    }
+    .deal-info input:focus { outline: none; border-color: var(--accent); }
+
+    .score-summary {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+    .total-block { flex-shrink: 0; }
+    .total-label { font-size: .8rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; }
+    .total-score { font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1.1; }
+    .total-max { font-size: 1rem; color: var(--text-secondary); font-weight: 500; }
+    .score-bar-wrap { flex: 1; min-width: 120px; }
+    .score-bar-outer { height: 12px; background: #eee; border-radius: 6px; overflow: hidden; }
+    .score-bar-inner { height: 100%; border-radius: 6px; transition: width .4s ease, background .4s ease; }
+    .score-rating { font-size: .85rem; font-weight: 600; margin-top: .35rem; text-align: right; }
+
+    .scorecard-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+    .scorecard-table thead th {
+      padding: .85rem 1rem;
+      font-size: .8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      text-align: center;
+      border-bottom: 2px solid var(--border);
+    }
+    .scorecard-table thead th:first-child { text-align: left; width: 180px; }
+    .scorecard-table thead th.col-0 { background: #fef3c7; color: #92400e; }
+    .scorecard-table thead th.col-1 { background: #fecaca; color: #991b1b; }
+    .scorecard-table thead th.col-2 { background: #bbf7d0; color: #166534; }
+    .scorecard-table thead th.col-score { background: #f1f5f9; color: #475569; width: 80px; }
+
+    .scorecard-table tbody tr { border-bottom: 1px solid var(--border); }
+    .scorecard-table tbody tr:last-child { border-bottom: none; }
+    .scorecard-table tbody td { padding: .75rem 1rem; vertical-align: top; font-size: .85rem; line-height: 1.5; }
+
+    .element-cell { display: flex; align-items: center; gap: .75rem; min-width: 170px; }
+    .element-badge {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.1rem; color: #fff;
+      flex-shrink: 0;
+    }
+    .element-name { font-weight: 600; font-size: .9rem; }
+
+    .badge-m { background: #ef4444; }
+    .badge-e { background: #ef4444; }
+    .badge-dc { background: #f97316; }
+    .badge-dp { background: #f97316; }
+    .badge-p { background: #22c55e; }
+    .badge-i { background: #22c55e; }
+    .badge-ch { background: #1e293b; }
+    .badge-co { background: #1e293b; }
+
+    .score-cell {
+      cursor: pointer;
+      border-left: 1px solid var(--border);
+      transition: background .15s, box-shadow .15s;
+      position: relative;
+    }
+    .score-cell:hover { filter: brightness(.97); }
+    .score-cell.selected-0 { background: #fef9e7; box-shadow: inset 0 0 0 2px #eab308; }
+    .score-cell.selected-1 { background: #fde8e8; box-shadow: inset 0 0 0 2px #ef4444; }
+    .score-cell.selected-2 { background: #e8f8f0; box-shadow: inset 0 0 0 2px #22c55e; }
+
+    .score-display {
+      text-align: center;
+      border-left: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 1.1rem;
+      vertical-align: middle !important;
+    }
+    .score-display .score-val { display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 8px; }
+    .score-val-0 { background: #fef3c7; color: #92400e; }
+    .score-val-1 { background: #fecaca; color: #991b1b; }
+    .score-val-2 { background: #bbf7d0; color: #166534; }
+    .score-val-none { background: #f1f5f9; color: #94a3b8; }
+
+    .actions {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: .75rem;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: .6rem 1.25rem;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      transition: all .15s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn-primary:hover { background: #006e52; }
+    .btn-secondary { background: var(--surface); color: var(--text); }
+    .btn-secondary:hover { background: var(--bg); }
+    .btn-danger { background: #fff; color: #dc2626; border-color: #fca5a5; }
+    .btn-danger:hover { background: #fef2f2; }
+    .btn-new { background: var(--accent-light); color: var(--accent); border-color: #a3dfc4; }
+    .btn-new:hover { background: #d1fae5; }
+
+    @media (max-width: 900px) {
+      .page-header-inner { flex-direction: column; }
+      .deal-info { grid-template-columns: 1fr; }
+      .scorecard-table { font-size: .78rem; }
+      .scorecard-table thead th, .scorecard-table tbody td { padding: .5rem .5rem; }
+      .element-cell { min-width: unset; }
+      .score-summary { flex-direction: column; align-items: stretch; }
+    }
+
+    @media print {
+      .page-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .actions, .deal-bar, .header-actions { display: none; }
+      .score-cell, .element-badge, .score-display .score-val, .scorecard-table thead th, .score-bar-inner {
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div>
+      <h1>MEDDPICC Scorecard</h1>
+      <p>Click each description to score your deal 0 – 2. Scores save automatically in your browser.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-new" onclick="addDeal()">+ New Deal</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="deal-bar" id="deal-bar">
+    <label>Your Deals</label>
+    <div class="deal-tabs" id="deal-tabs"></div>
+  </div>
+
+  <div class="deal-info">
+    <div>
+      <label>Deal / Opportunity Name</label>
+      <input type="text" id="deal-name" placeholder="e.g. Acme Corp — B2B Expansion">
+    </div>
+    <div>
+      <label>Your Name</label>
+      <input type="text" id="rep-name" placeholder="e.g. Jane Smith">
+    </div>
+    <div>
+      <label>Date</label>
+      <input type="date" id="score-date">
+    </div>
+  </div>
+
+  <div class="score-summary">
+    <div class="total-block">
+      <div class="total-label">Total Score</div>
+      <div><span class="total-score" id="total-score">&mdash;</span> <span class="total-max">/ 16</span></div>
+    </div>
+    <div class="score-bar-wrap">
+      <div class="score-bar-outer"><div class="score-bar-inner" id="score-bar" style="width:0%;background:#94a3b8"></div></div>
+      <div class="score-rating" id="score-rating" style="color:#94a3b8">No scores yet</div>
+    </div>
+  </div>
+
+  <table class="scorecard-table">
+    <thead>
+      <tr>
+        <th>Elements</th>
+        <th class="col-0">0</th>
+        <th class="col-1">1</th>
+        <th class="col-2">2</th>
+        <th class="col-score">Score</th>
+      </tr>
+    </thead>
+    <tbody id="scorecard-body"></tbody>
+  </table>
+
+  <div class="actions">
+    <button class="btn btn-danger" onclick="deleteDeal()">Delete Deal</button>
+    <button class="btn btn-secondary" onclick="resetScores()">Reset Scores</button>
+    <button class="btn btn-secondary" onclick="copyToClipboard()">Copy Summary</button>
+    <button class="btn btn-primary" onclick="window.print()">Print / Save PDF</button>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'meddpicc_deals';
+const ACTIVE_KEY = 'meddpicc_active';
+
+const elements = [
+  { key: 'M', name: 'Metrics', badge: 'badge-m', scores: [
+    'Seller has not identified any relevant metrics and cannot identify where we have solved similar issues before.',
+    'Seller has identified very few metrics which provide limited relevance to current customer.',
+    'Seller has identified several metrics which are highly relevant to customer\u2019s issues and pains.'
+  ]},
+  { key: 'E', name: 'Economic Buyer', badge: 'badge-e', scores: [
+    'Seller has not identified the Economic Buyer for the opportunity.',
+    'Seller has identified the Economic Buyer but has not established access and/or cannot define his/her solution preference.',
+    'Seller has established access with the Economic Buyer and confirmed his/her preference for our solution.'
+  ]},
+  { key: 'D', name: 'Decision Criteria', badge: 'badge-dc', scores: [
+    'Seller has not identified the decision criteria OR the criteria are unfavourable to us.',
+    'Seller has identified the Decision Criteria but has not influenced them and/or cannot define their priority or weighting.',
+    'Seller has identified the decision criteria and has played an active role in influencing them in our favour.'
+  ]},
+  { key: 'D', name: 'Decision Process', badge: 'badge-dp', scores: [
+    'Seller cannot define the steps involved in the customer\u2019s decision process.',
+    'Seller can describe the steps of the Decision Process but has not identified all of the players and/or timelines.',
+    'Seller can describe the steps of the Decision Process along with the resources and timelines for each step.'
+  ]},
+  { key: 'P', name: 'Paper Process', badge: 'badge-p', scores: [
+    'Seller cannot define the steps involved in the customer\u2019s paper process.',
+    'Seller can describe the steps of the Paper Process but has not identified all of the players and/or timelines.',
+    'Seller can describe the steps of the Paper Process along with the resources and timelines for each step.'
+  ]},
+  { key: 'I', name: 'Identified Pain', badge: 'badge-i', scores: [
+    'Seller has not identified the pain or compelling event that would cause the customer to take action.',
+    'Seller has identified the Pain but cannot define who\u2019s impacted or what the quantified impact is.',
+    'Seller understands the customer\u2019s pains and knows who is impacted and what the quantified impact will be.'
+  ]},
+  { key: 'C', name: 'Champion', badge: 'badge-ch', scores: [
+    'Seller has not identified a credible champion.',
+    'Seller has identified and tested at least 1 champion within the organization but has not established a wider base.',
+    'Seller has identified and tested several Champions and has multiple points of support across the customer\u2019s org.'
+  ]},
+  { key: 'C', name: 'Competition', badge: 'badge-co', scores: [
+    'Seller has not identified competitive offerings or initiatives.',
+    'Seller has identified legitimate competitors but has not established or confirmed differentiation.',
+    'Seller has identified the critical few competitors & can describe and defend our differentiation.'
+  ]}
+];
+
+function loadDeals() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+}
+function saveDeals(deals) { localStorage.setItem(STORAGE_KEY, JSON.stringify(deals)); }
+function getActiveId() { return localStorage.getItem(ACTIVE_KEY); }
+function setActiveId(id) { localStorage.setItem(ACTIVE_KEY, id); }
+
+function newDealObj() {
+  return {
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    name: '',
+    rep: '',
+    date: new Date().toISOString().slice(0, 10),
+    scores: Array(elements.length).fill(null)
+  };
+}
+
+function getActiveDeal() {
+  let deals = loadDeals();
+  if (deals.length === 0) {
+    const d = newDealObj();
+    deals.push(d);
+    saveDeals(deals);
+  }
+  let id = getActiveId();
+  let deal = deals.find(d => d.id === id);
+  if (!deal) { deal = deals[0]; setActiveId(deal.id); }
+  return deal;
+}
+
+function addDeal() {
+  const deals = loadDeals();
+  const d = newDealObj();
+  deals.push(d);
+  saveDeals(deals);
+  setActiveId(d.id);
+  renderAll();
+  document.getElementById('deal-name').focus();
+}
+
+function switchDeal(id) {
+  setActiveId(id);
+  renderAll();
+}
+
+function deleteDeal() {
+  let deals = loadDeals();
+  if (deals.length <= 1) { resetScores(); return; }
+  const id = getActiveId();
+  deals = deals.filter(d => d.id !== id);
+  saveDeals(deals);
+  setActiveId(deals[0].id);
+  renderAll();
+}
+
+function resetScores() {
+  const deals = loadDeals();
+  const deal = deals.find(d => d.id === getActiveId());
+  if (deal) { deal.scores = Array(elements.length).fill(null); saveDeals(deals); }
+  renderAll();
+}
+
+function saveDealField(field, value) {
+  const deals = loadDeals();
+  const deal = deals.find(d => d.id === getActiveId());
+  if (deal) { deal[field] = value; saveDeals(deals); }
+  if (field === 'name') renderTabs();
+}
+
+function setScore(index, value) {
+  const deals = loadDeals();
+  const deal = deals.find(d => d.id === getActiveId());
+  if (deal) { deal.scores[index] = value; saveDeals(deals); }
+  renderAll();
+}
+
+function renderTabs() {
+  const deals = loadDeals();
+  const activeId = getActiveId();
+  const tabs = document.getElementById('deal-tabs');
+  tabs.innerHTML = '';
+  deals.forEach(d => {
+    const btn = document.createElement('button');
+    btn.className = 'deal-tab' + (d.id === activeId ? ' active' : '');
+    btn.textContent = d.name || 'Untitled Deal';
+    btn.title = d.name || 'Untitled Deal';
+    btn.onclick = () => switchDeal(d.id);
+    tabs.appendChild(btn);
+  });
+}
+
+function renderFields() {
+  const deal = getActiveDeal();
+  document.getElementById('deal-name').value = deal.name || '';
+  document.getElementById('rep-name').value = deal.rep || '';
+  document.getElementById('score-date').value = deal.date || new Date().toISOString().slice(0, 10);
+}
+
+function renderTable() {
+  const deal = getActiveDeal();
+  const tbody = document.getElementById('scorecard-body');
+  tbody.innerHTML = '';
+  elements.forEach((el, i) => {
+    const tr = document.createElement('tr');
+    const tdEl = document.createElement('td');
+    tdEl.innerHTML = `<div class="element-cell"><div class="element-badge ${el.badge}">${el.key}</div><div class="element-name">${el.name}</div></div>`;
+    tr.appendChild(tdEl);
+    for (let s = 0; s < 3; s++) {
+      const td = document.createElement('td');
+      td.className = 'score-cell';
+      if (deal.scores[i] === s) td.classList.add(`selected-${s}`);
+      td.textContent = el.scores[s];
+      td.addEventListener('click', () => setScore(i, s));
+      tr.appendChild(td);
+    }
+    const tdScore = document.createElement('td');
+    tdScore.className = 'score-display';
+    if (deal.scores[i] !== null) {
+      tdScore.innerHTML = `<span class="score-val score-val-${deal.scores[i]}">${deal.scores[i]}</span>`;
+    } else {
+      tdScore.innerHTML = `<span class="score-val score-val-none">&mdash;</span>`;
+    }
+    tr.appendChild(tdScore);
+    tbody.appendChild(tr);
+  });
+}
+
+function renderSummary() {
+  const deal = getActiveDeal();
+  const scored = deal.scores.filter(s => s !== null);
+  const total = scored.reduce((a, b) => a + b, 0);
+  const el = document.getElementById('total-score');
+  const bar = document.getElementById('score-bar');
+  const rating = document.getElementById('score-rating');
+  if (scored.length === 0) {
+    el.textContent = '\u2014';
+    bar.style.width = '0%';
+    bar.style.background = '#94a3b8';
+    rating.textContent = 'No scores yet';
+    rating.style.color = '#94a3b8';
+    return;
+  }
+  el.textContent = total;
+  const pct = (total / 16) * 100;
+  bar.style.width = pct + '%';
+  let color, label;
+  if (pct >= 75) { color = '#22c55e'; label = 'Strong \u2014 Deal is well-qualified'; }
+  else if (pct >= 50) { color = '#f59e0b'; label = 'Developing \u2014 Gaps to address'; }
+  else { color = '#ef4444'; label = 'Weak \u2014 Significant gaps remain'; }
+  bar.style.background = color;
+  rating.textContent = `${total}/16 \u2014 ${label}`;
+  rating.style.color = color;
+}
+
+function renderAll() {
+  renderTabs();
+  renderFields();
+  renderTable();
+  renderSummary();
+}
+
+function copyToClipboard() {
+  const deal = getActiveDeal();
+  const total = deal.scores.filter(s => s !== null).reduce((a, b) => a + b, 0);
+  let lines = [
+    `MEDDPICC Scorecard \u2014 ${deal.name || 'Untitled Deal'}`,
+    `Rep: ${deal.rep || 'N/A'}  |  Date: ${deal.date}`,
+    `Total Score: ${total}/16`, ''
+  ];
+  elements.forEach((el, i) => {
+    lines.push(`${el.key} \u2014 ${el.name}: ${deal.scores[i] !== null ? deal.scores[i] + '/2' : 'Not scored'}`);
+  });
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+document.getElementById('deal-name').addEventListener('input', e => saveDealField('name', e.target.value));
+document.getElementById('rep-name').addEventListener('input', e => saveDealField('rep', e.target.value));
+document.getElementById('score-date').addEventListener('input', e => saveDealField('date', e.target.value));
+
+renderAll();
+</script>
+</body>
+</html>
